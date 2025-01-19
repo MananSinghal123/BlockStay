@@ -8,6 +8,14 @@ launchpad_addr = "_"
 initial_creator_addr = "_"
 minter = "_"
 
+
+[dev-addresses]
+minter = "0x123"
+initial_creator_addr = "0x234"
+launchpad_addr = "0x345"
+marketplace_addr = "0x456"
+
+
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }
 AptosTokenObjects = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-token-objects" }

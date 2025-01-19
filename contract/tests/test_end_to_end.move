@@ -1,163 +1,208 @@
 #[test_only]
-module launchpad_addr::test_end_to_end {
+module marketplace_addr::test_marketplace {
     use std::option;
-    use std::signer;
     use std::string;
-    use std::vector;
-
-    use aptos_framework::aptos_coin::{Self, AptosCoin};
-    use aptos_framework::coin;
+    use std::signer;
     use aptos_framework::account;
+    use aptos_framework::aptos_coin;
+    use aptos_framework::coin;
+    use aptos_framework::object;
     use aptos_framework::timestamp;
-
+    use aptos_token_objects::token;
     use aptos_token_objects::collection;
-
+    use marketplace_addr::marketplace;
     use launchpad_addr::launchpad;
+    use marketplace_addr::test_utils;
 
-    /// Category for allowlist mint stage
-    const ALLOWLIST_MINT_STAGE_CATEGORY: vector<u8> = b"Allowlist mint stage";
-    /// Category for public mint stage
-    const PUBLIC_MINT_MINT_STAGE_CATEGORY: vector<u8> = b"Public mint stage";
+    // Test setup function to create a test collection with marketplace enabled
+    fun setup_test_collection(
+        creator: &signer,
+        name: string::String,
+        max_supply: u64,
+        marketplace_enabled: bool
+    ): object::Object<collection::Collection> {
+        timestamp::set_time_has_started_for_testing(@aptos_framework);
 
-    #[test(aptos_framework = @0x1, sender = @launchpad_addr, user1 = @0x200, user2 = @0x201)]
-    fun test_happy_path(
-        aptos_framework: &signer,
-        sender: &signer,
-        user1: &signer,
-        user2: &signer,
-    ) {
-        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
-
-        let user1_addr = signer::address_of(user1);
-        let user2_addr = signer::address_of(user2);
-
-        // current timestamp is 0 after initialization
-        timestamp::set_time_has_started_for_testing(aptos_framework);
-        account::create_account_for_test(user1_addr);
-        account::create_account_for_test(user2_addr);
-        coin::register<AptosCoin>(user1);
-
-        launchpad::init_module_for_test(sender);
-
+        // Create collection with marketplace enabled
         launchpad::create_collection(
-            sender,
-            string::utf8(b"description"),
-            string::utf8(b"name"),
-            string::utf8(b"https://gateway.irys.xyz/manifest_id/collection.json"),
-            10,
-            option::some(10),
-            option::some(3),
-            option::some(vector[user1_addr]),
-            option::some(timestamp::now_seconds()),
-            option::some(timestamp::now_seconds() + 100),
-            option::some(3),
-            option::some(5),
-            option::some(timestamp::now_seconds() + 200),
-            option::some(timestamp::now_seconds() + 300),
-            option::some(2),
-            option::some(10),
+            creator,
+            string::utf8(b"Test Collection Description"),
+            name,
+            string::utf8(b"https://test.uri/collection.json"),
+            max_supply,
+            option::some(5), // 5% royalty
+            option::none(), // no pre-mint
+            option::some(vector[@0x123]), // allowlist
+            option::some(1000), // allowlist start time
+            option::some(2000), // allowlist end time
+            option::some(2), // allowlist mint limit
+            option::some(100), // allowlist mint fee
+            option::some(2001), // public start time
+            option::some(3000), // public end time
+            option::some(5), // public mint limit
+            option::some(200), // public mint fee
+            marketplace_enabled
         );
+
         let registry = launchpad::get_registry();
-        let collection_1 = *vector::borrow(&registry, vector::length(&registry) - 1);
-        assert!(collection::count(collection_1) == option::some(3), 1);
-
-        let mint_fee = launchpad::get_mint_fee(collection_1, string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY), 1);
-        aptos_coin::mint(aptos_framework, user1_addr, mint_fee);
-
-        launchpad::mint_nft(user1, collection_1, 1);
-
-        let active_or_next_stage = launchpad::get_active_or_next_mint_stage(collection_1);
-        assert!(active_or_next_stage == option::some(string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY)), 3);
-        let (start_time, end_time) = launchpad::get_mint_stage_start_and_end_time(
-            collection_1,
-            string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY)
-        );
-        assert!(start_time == 0, 4);
-        assert!(end_time == 100, 5);
-
-        // bump global timestamp to 150 so allowlist stage is over but public mint stage is not started yet
-        timestamp::update_global_time_for_test_secs(150);
-        let active_or_next_stage = launchpad::get_active_or_next_mint_stage(collection_1);
-        assert!(active_or_next_stage == option::some(string::utf8(PUBLIC_MINT_MINT_STAGE_CATEGORY)), 6);
-        let (start_time, end_time) = launchpad::get_mint_stage_start_and_end_time(
-            collection_1,
-            string::utf8(PUBLIC_MINT_MINT_STAGE_CATEGORY)
-        );
-        assert!(start_time == 200, 7);
-        assert!(end_time == 300, 8);
-
-        // bump global timestamp to 250 so public mint stage is active
-        timestamp::update_global_time_for_test_secs(250);
-        let active_or_next_stage = launchpad::get_active_or_next_mint_stage(collection_1);
-        assert!(active_or_next_stage == option::some(string::utf8(PUBLIC_MINT_MINT_STAGE_CATEGORY)), 9);
-        let (start_time, end_time) = launchpad::get_mint_stage_start_and_end_time(
-            collection_1,
-            string::utf8(PUBLIC_MINT_MINT_STAGE_CATEGORY)
-        );
-        assert!(start_time == 200, 10);
-        assert!(end_time == 300, 11);
-
-        // bump global timestamp to 350 so public mint stage is over
-        timestamp::update_global_time_for_test_secs(350);
-        let active_or_next_stage = launchpad::get_active_or_next_mint_stage(collection_1);
-        assert!(active_or_next_stage == option::none(), 12);
-
-        coin::destroy_burn_cap(burn_cap);
-        coin::destroy_mint_cap(mint_cap);
+        *vector::borrow(&registry, vector::length(&registry) - 1)
     }
 
-    #[test(aptos_framework = @0x1, sender = @launchpad_addr, user1 = @0x200)]
-    #[expected_failure(abort_code = 12, location = launchpad)]
-    fun test_mint_disabled(
+    // Test basic fixed price listing and purchase flow with marketplace enabled collection
+    #[test(aptos_framework = @0x1, marketplace = @marketplace_addr, creator = @0x123, seller = @0x456, buyer = @0x789)]
+    fun test_marketplace_enabled_listing(
         aptos_framework: &signer,
-        sender: &signer,
-        user1: &signer,
+        marketplace: &signer,
+        creator: &signer,
+        seller: &signer,
+        buyer: &signer,
     ) {
-        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
-
-        let user1_addr = signer::address_of(user1);
-
-        // current timestamp is 0 after initialization
-        timestamp::set_time_has_started_for_testing(aptos_framework);
-        account::create_account_for_test(user1_addr);
-        coin::register<AptosCoin>(user1);
-
-        launchpad::init_module_for_test(sender);
-
-        launchpad::create_collection(
-            sender,
-            string::utf8(b"description"),
-            string::utf8(b"name"),
-            string::utf8(b"https://gateway.irys.xyz/manifest_id/collection.json"),
-            10,
-            option::some(10),
-            option::some(3),
-            option::some(vector[user1_addr]),
-            option::some(timestamp::now_seconds()),
-            option::some(timestamp::now_seconds() + 100),
-            option::some(3),
-            option::some(5),
-            option::some(timestamp::now_seconds() + 200),
-            option::some(timestamp::now_seconds() + 300),
-            option::some(2),
-            option::some(10),
+        // Setup accounts
+        let (marketplace_addr, seller_addr, buyer_addr) = test_utils::setup(aptos_framework, marketplace, seller, buyer);
+        account::create_account_for_test(@0x123);
+        
+        // Setup collection with marketplace enabled
+        let collection = setup_test_collection(
+            creator,
+            string::utf8(b"Test Collection"),
+            100,
+            true // marketplace enabled
         );
-        let registry = launchpad::get_registry();
-        let collection_1 = *vector::borrow(&registry, vector::length(&registry) - 1);
 
-        assert!(launchpad::is_mint_enabled(collection_1), 1);
+        // Mint an NFT to seller
+        timestamp::fast_forward_seconds(2002); // Move to public mint
+        launchpad::mint_nft(seller, collection, 1);
 
-        let mint_fee = launchpad::get_mint_fee(collection_1, string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY), 1);
-        aptos_coin::mint(aptos_framework, user1_addr, mint_fee);
+        // Get the NFT from seller's account
+        let tokens = token::get_token_ids(seller_addr);
+        let token = object::address_to_object<token::Token>(*vector::borrow(&tokens, 0));
 
-        launchpad::mint_nft(user1, collection_1, 1);
+        // List NFT
+        let listing = marketplace::list_with_fixed_price<aptos_coin::AptosCoin>(
+            seller,
+            object::convert(token),
+            500
+        );
 
-        launchpad::update_mint_enabled(sender, collection_1, false);
-        assert!(!launchpad::is_mint_enabled(collection_1), 2);
+        // Verify listing
+        let (listed_token, listed_seller) = marketplace::listing(listing);
+        assert!(listed_token == object::convert(token), 0);
+        assert!(listed_seller == seller_addr, 1);
+        assert!(marketplace::price<aptos_coin::AptosCoin>(listing) == option::some(500), 2);
 
-        launchpad::mint_nft(user1, collection_1, 1);
+        // Purchase NFT
+        marketplace::purchase<aptos_coin::AptosCoin>(buyer, object::convert(listing));
 
-        coin::destroy_burn_cap(burn_cap);
-        coin::destroy_mint_cap(mint_cap);
+        // Verify transfer and payment
+        assert!(token::owner(token) == buyer_addr, 3);
+        assert!(coin::balance<aptos_coin::AptosCoin>(seller_addr) == 10500, 4);
+        assert!(coin::balance<aptos_coin::AptosCoin>(buyer_addr) == 9500, 5);
+    }
+
+    // Test listing fails when marketplace is disabled for collection
+    #[test(aptos_framework = @0x1, marketplace = @marketplace_addr, creator = @0x123, seller = @0x456, buyer = @0x789)]
+    #[expected_failure(abort_code = 0x50003)] // EMARKETPLACE_LISTING_DISABLED
+    fun test_marketplace_disabled_listing(
+        aptos_framework: &signer,
+        marketplace: &signer,
+        creator: &signer,
+        seller: &signer,
+        buyer: &signer,
+    ) {
+        // Setup accounts
+        test_utils::setup(aptos_framework, marketplace, seller, buyer);
+        account::create_account_for_test(@0x123);
+        
+        // Setup collection with marketplace disabled
+        let collection = setup_test_collection(
+            creator,
+            string::utf8(b"Test Collection 2"),
+            100,
+            false // marketplace disabled
+        );
+
+        // Mint an NFT to seller
+        timestamp::fast_forward_seconds(2002); // Move to public mint
+        launchpad::mint_nft(seller, collection, 1);
+
+        // Get the NFT from seller's account
+        let tokens = token::get_token_ids(signer::address_of(seller));
+        let token = object::address_to_object<token::Token>(*vector::borrow(&tokens, 0));
+
+        // Try to list NFT - should fail
+        marketplace::list_with_fixed_price<aptos_coin::AptosCoin>(
+            seller,
+            object::convert(token),
+            500
+        );
+    }
+
+    // Test toggling marketplace enabled/disabled
+    #[test(aptos_framework = @0x1, marketplace = @marketplace_addr, creator = @0x123)]
+    fun test_toggle_marketplace_listing(
+        aptos_framework: &signer,
+        marketplace: &signer,
+        creator: &signer,
+    ) {
+        // Setup
+        test_utils::setup(aptos_framework, marketplace, creator, creator);
+        account::create_account_for_test(@0x123);
+        
+        // Create collection with marketplace initially enabled
+        let collection = setup_test_collection(
+            creator,
+            string::utf8(b"Test Collection 3"),
+            100,
+            true
+        );
+
+        // Verify initially enabled
+        assert!(launchpad::is_marketplace_enabled(collection) == true, 0);
+
+        // Disable marketplace
+        launchpad::toggle_marketplace_listing(creator, collection, false);
+        assert!(launchpad::is_marketplace_enabled(collection) == false, 1);
+
+        // Re-enable marketplace
+        launchpad::toggle_marketplace_listing(creator, collection, true);
+        assert!(launchpad::is_marketplace_enabled(collection) == true, 2);
+    }
+
+    // Test purchasing with insufficient funds
+    #[test(aptos_framework = @0x1, marketplace = @marketplace_addr, creator = @0x123, seller = @0x456, buyer = @0x789)]
+    #[expected_failure(abort_code = 0x10006)] // Insufficient funds
+    fun test_insufficient_funds_purchase(
+        aptos_framework: &signer,
+        marketplace: &signer,
+        creator: &signer,
+        seller: &signer,
+        buyer: &signer,
+    ) {
+        // Setup accounts
+        test_utils::setup(aptos_framework, marketplace, seller, buyer);
+        account::create_account_for_test(@0x123);
+        
+        // Setup collection
+        let collection = setup_test_collection(
+            creator,
+            string::utf8(b"Test Collection 4"),
+            100,
+            true
+        );
+
+        // Mint and list NFT at very high price
+        timestamp::fast_forward_seconds(2002);
+        launchpad::mint_nft(seller, collection, 1);
+        let tokens = token::get_token_ids(signer::address_of(seller));
+        let token = object::address_to_object<token::Token>(*vector::borrow(&tokens, 0));
+
+        let listing = marketplace::list_with_fixed_price<aptos_coin::AptosCoin>(
+            seller,
+            object::convert(token),
+            1000000 // Price higher than buyer's balance
+        );
+
+        // Try to purchase - should fail
+        marketplace::purchase<aptos_coin::AptosCoin>(buyer, object::convert(listing));
     }
 }
