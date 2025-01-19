@@ -3,6 +3,7 @@ module launchpad_addr::launchpad {
     use std::signer;
     use std::string::{Self, String};
     use std::vector;
+    use marketplace_addr::marketplace;
 
     use aptos_std::simple_map::{Self, SimpleMap};
     use aptos_std::string_utils;
@@ -113,6 +114,8 @@ module launchpad_addr::launchpad {
         extend_ref: object::ExtendRef,
     }
 
+    
+
     /// Global per contract
     struct Registry has key {
         collection_objects: vector<Object<Collection>>
@@ -126,6 +129,11 @@ module launchpad_addr::launchpad {
         admin_addr: address,
         pending_admin_addr: Option<address>,
         mint_fee_collector_addr: address,
+    }
+
+      struct TokenMarketConfig has key {
+        // Whether token can be listed on marketplace
+        listing_enabled: bool,
     }
 
     /// If you deploy the module under an object, sender is the object's signer
@@ -211,6 +219,8 @@ module launchpad_addr::launchpad {
         public_mint_limit_per_addr: Option<u64>,
         // Public mint fee per NFT denominated in oapt (smallest unit of APT, i.e. 1e-8 APT)
         public_mint_fee_per_nft: Option<u64>,
+        marketplace_enabled: bool, // New parameter
+
     ) acquires Registry, Config, CollectionConfig, CollectionOwnerObjConfig {
         let sender_addr = signer::address_of(sender);
         let config = borrow_global<Config>(@launchpad_addr);
@@ -238,6 +248,13 @@ module launchpad_addr::launchpad {
         let collection_obj = object::object_from_constructor_ref(collection_obj_constructor_ref);
 
         collection_components::create_refs_and_properties(collection_obj_constructor_ref);
+
+
+       // Add marketplace configuration
+        move_to(collection_obj_signer, TokenMarketConfig {
+            listing_enabled: marketplace_enabled
+        });
+
 
         move_to(collection_owner_obj_signer, CollectionOwnerObjConfig {
             extend_ref: object::generate_extend_ref(collection_owner_obj_constructor_ref),
@@ -319,6 +336,24 @@ module launchpad_addr::launchpad {
         });
     }
 
+// Enable/disable marketplace listing for a collection
+    public entry fun toggle_marketplace_listing(
+        sender: &signer, 
+        collection_obj: Object<Collection>,
+        enabled: bool
+    ) acquires Config, TokenMarketConfig {
+        let sender_addr = signer::address_of(sender);
+        let config = borrow_global<Config>(@launchpad_addr);
+        assert!(
+            is_admin(config, sender_addr) || is_creator(config, sender_addr),
+            EONLY_ADMIN_OR_CREATOR_CAN_CREATE_COLLECTION
+        );
+        
+        let collection_obj_addr = object::object_address(&collection_obj);
+        let market_config = borrow_global_mut<TokenMarketConfig>(collection_obj_addr);
+        market_config.listing_enabled = enabled;
+    }
+
     /// Mint NFT, anyone with enough mint fee and has not reached mint limit can mint FA
     /// If we are in allowlist stage, only addresses in allowlist can mint FA
     public entry fun mint_nft(
@@ -354,6 +389,13 @@ module launchpad_addr::launchpad {
 
     // ================================= View  ================================= //
 
+ #[view]
+    public fun is_marketplace_enabled(collection_obj: Object<Collection>): bool acquires TokenMarketConfig {
+        let collection_obj_addr = object::object_address(&collection_obj);
+        borrow_global<TokenMarketConfig>(collection_obj_addr).listing_enabled
+    }
+
+    
     #[view]
     /// Get creator, creator is the address that is allowed to create collections
     public fun get_creator(): address acquires Config {

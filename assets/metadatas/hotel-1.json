@@ -1,0 +1,12 @@
+{
+  "description": "nft 1 in collection",
+  "image": "",
+  "name": "NFT 1",
+  "external_url": "https://your_project_url.io/1",
+  "attributes": [
+    {
+      "location": "london",
+      "price": "2"
+    }
+  ]
+}
