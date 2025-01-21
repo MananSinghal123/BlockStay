@@ -14,21 +14,21 @@ export function Header() {
   // }, [data?.collection]);
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 max-w-screen-xl mx-auto w-full flex-wrap">
+    <div className="flex bg-black items-center justify-between px-4 py-2 max-w-screen-xl mx-auto w-full flex-wrap">
       <h1 className="display">
-        <Link to="/">Hotel Coin Exchange</Link>
+        <Link className="text-white" to="/">Hotel Coin Exchange</Link>
       </h1>
 
-      <div className="flex gap-2 items-center flex-wrap">
+      <div className="flex gap-2  items-center flex-wrap">
         {IS_DEV && (
           <>
-            <Link className={buttonVariants({ variant: "link" })} to={"/"}>
+            <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/"}>
               Mint Page
             </Link>
-            <Link className={buttonVariants({ variant: "link" })} to={"/my-collections"}>
+            <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/my-collections"}>
               My Collections
             </Link>
-            <Link className={buttonVariants({ variant: "link" })} to={"/create-collection"}>
+            <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/create-collection"}>
               Create Collection
             </Link>
           </>

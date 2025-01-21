@@ -69,7 +69,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         <Card>
           <CardContent
             fullPadding
-            className="flex flex-col md:flex-row gap-4 md:justify-between items-start md:items-center flex-wrap"
+            className="flex flex-col md:flex-row gap-4 md:justify-between items-start md:items-center bg-[#a0522d] flex-wrap"
           >
             <form onSubmit={mintNft} className="flex flex-col md:flex-row gap-4 w-full md:basis-1/4">
               <Input
@@ -99,7 +99,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
           <p className="whitespace-nowrap body-sm-semibold text-white">Collection Address</p>
 
           <div className="flex gap-x-2">
-            <AddressButton address={collection?.collection_id ?? ""} />
+            <AddressButton  address={collection?.collection_id ?? ""} />
             {/* <a
               className={buttonVariants({ variant: "link" })}
               target="_blank"
@@ -143,13 +143,13 @@ const AddressButton: FC<{ address: string }> = ({ address }) => {
   }
 
   return (
-    <Button onClick={onCopy} className="whitespace-nowrap flex bg-white gap-1 px-0 py-0" variant="link">
+    <Button onClick={onCopy} className="whitespace-nowrap flex bg-black gap-1 px-0 py-0" variant="link">
       {copied ? (
         "Copied!"
       ) : (
         <>
           {truncateAddress(address)}
-          <Image src={Copy} className="dark:invert" />
+          <Image src={Copy} className="bg-white rounded-sm" />
         </>
       )}
     </Button>
