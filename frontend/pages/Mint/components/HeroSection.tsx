@@ -3,8 +3,8 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { useQueryClient } from "@tanstack/react-query";
 // Internal assets
 import Copy from "@/assets/icons/copy.svg";
-import ExternalLink from "@/assets/icons/external-link.svg";
-import Placeholder1 from "@/assets/placeholders/bear-1.png";
+// import ExternalLink from "@/assets/icons/external-link.svg";
+// import Placeholder1 from "@/assets/placeholders/bear-1.png";
 // Internal utils
 import { truncateAddress } from "@/utils/truncateAddress";
 import { clampNumber } from "@/utils/clampNumber";
@@ -18,13 +18,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Socials } from "@/pages/Mint/components/Socials";
+// import { Socials } from "@/pages/Mint/components/Socials";
 // Internal constants
-import { NETWORK } from "@/constants";
+// import { NETWORK } from "@/constants";
 // Internal config
-import { config } from "@/config";
+// import { config } from "@/config";
 // Internal enrty functions
 import { mintNFT } from "@/entry-functions/mint_nft";
+import image from "../../../assets/icons/Gemini_Generated_Image_x2oto6x2oto6x2ot.jpeg"
 
 interface HeroSectionProps {}
 
@@ -51,17 +52,20 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   };
 
   return (
-    <section className="hero-container flex flex-col md:flex-row gap-6 px-4 max-w-screen-xl mx-auto w-full">
+    <section className="hero-container bg-black flex flex-col md:flex-row gap-6 px-4 max-w-screen-xl mx-auto w-full">
       <Image
-        src={collection?.cdn_asset_uris.cdn_image_uri ?? collection?.cdn_asset_uris.cdn_animation_uri ?? Placeholder1}
+        src={image}
+        // collection?.cdn_asset_uris.cdn_image_uri ?? collection?.cdn_asset_uris.cdn_animation_uri ?? Placeholder1
         rounded
-        className="w-full md:basis-2/5 aspect-square object-cover self-center"
+        className="w-[20%] md:basis-2/5 aspect-square object-cover self-center mt-[1rem]"
       />
-      <div className="basis-3/5 flex flex-col gap-4">
-        <h1 className="title-md">{collection?.collection_name ?? config.defaultCollection?.name}</h1>
-        <Socials />
-        <p className="body-sm">{collection?.description ?? config.defaultCollection?.description}</p>
 
+      <div className="basis-3/5 flex flex-col gap-4">
+        <h1 className="title-md text-white mt-[2rem]">Welcome to Exchange</h1>
+        {/* {collection?.collection_name ?? config.defaultCollection?.name} this was written on top*/} 
+        {/* <Socials /> */}
+        <p className="body-sm text-white">Imagine a world where canceling a hotel room doesn't mean losing money. 🤯 With blockchain-powered NFT bookings, you can list your reservation on a decentralized exchange and recoup your costs. It's a win-win for travelers!</p>
+        {/* {collection?.description ?? config.defaultCollection?.description} */}
         <Card>
           <CardContent
             fullPadding
@@ -92,17 +96,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         </Card>
 
         <div className="flex gap-x-2 items-center flex-wrap justify-between">
-          <p className="whitespace-nowrap body-sm-semibold">Collection Address</p>
+          <p className="whitespace-nowrap body-sm-semibold text-white">Collection Address</p>
 
           <div className="flex gap-x-2">
             <AddressButton address={collection?.collection_id ?? ""} />
-            <a
+            {/* <a
               className={buttonVariants({ variant: "link" })}
               target="_blank"
               href={`https://explorer.aptoslabs.com/account/${collection?.collection_id}?network=${NETWORK}`}
             >
               View on Explorer <Image src={ExternalLink} />
-            </a>
+            </a> */}
           </div>
         </div>
 
@@ -139,7 +143,7 @@ const AddressButton: FC<{ address: string }> = ({ address }) => {
   }
 
   return (
-    <Button onClick={onCopy} className="whitespace-nowrap flex gap-1 px-0 py-0" variant="link">
+    <Button onClick={onCopy} className="whitespace-nowrap flex bg-white gap-1 px-0 py-0" variant="link">
       {copied ? (
         "Copied!"
       ) : (

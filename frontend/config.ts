@@ -29,21 +29,24 @@ export const config: Config = {
     title: "Our Team",
     members: [
       {
-        name: "Mepoti",
-        role: "Aliquip Esse",
+        name: "Pranshu Saxena",
+        role: "Frontend developer and Smart Contracts",
         img: Placeholder1,
         socials: {
           twitter: "https://twitter.com",
         },
       },
       {
-        name: "Zucker",
-        role: "Sunt Duis",
+        name: "Manan Singhal",
+        role: "Smart Contracts",
         img: Placeholder2,
+        socials: {
+          twitter: "https://twitter.com",
+        },
       },
       {
-        name: "SimonT",
-        role: "Ullamco Tempor",
+        name: "Ayush Petwal",
+        role: "Smart Contracts and Design",
         img: Placeholder3,
         socials: {
           twitter: "https://twitter.com",
