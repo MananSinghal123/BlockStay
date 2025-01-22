@@ -157,7 +157,8 @@ fun test_happy_path(
     account::create_account_for_test(user1_addr);
     account::create_account_for_test(user2_addr);
     coin::register<AptosCoin>(user1);
-    
+    coin::register<AptosCoin>(user2);
+
     // 3. Set up marketplace
     // let (marketplace_addr, seller_addr, purchaser_addr) = setup_test(aptos_framework, marketplace, seller, purchaser);
     // launchpad:: initialize_marketplace_signer(marketplace);
@@ -188,29 +189,29 @@ fun test_happy_path(
     assert!(collection::count(collection_1) == option::some(3), 1);
 
     // 5. Mint NFT and create listing
-    // let token = launchpad::mint_nft_internal(user1_addr, collection_1);
+    let token = launchpad::mint_nft_internal(user1_addr, collection_1);
     // object::transfer(user1, token, seller_addr);  // Transfer to seller before listing
 
-    // let listing = launchpad::list_with_fixed_price_internal<aptos_coin::AptosCoin>(
-    //     seller,
-    //     object::convert(token),
-    //     500,
-    // );
+    let listing = launchpad::list_with_fixed_price_internal<aptos_coin::AptosCoin>(
+        user1,
+        object::convert(token),
+        500,
+    );
 
-    // // 6. Verify listing
-    // let (listing_obj, seller_addr2) = launchpad::listing(listing);
-    // assert!(listing_obj == object::convert(token), 0);
-    // assert!(seller_addr2 == seller_addr, 0);
+    // 6. Verify listing
+    let (listing_obj, seller_addr2) = launchpad::listing(listing);
+    assert!(listing_obj == object::convert(token), 0);
+    assert!(seller_addr2 == user1_addr, 0);
 
-    // // 7. Purchase NFT
-    // let mint_fee = launchpad::get_mint_fee(collection_1, string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY), 1);
-    // aptos_coin::mint(aptos_framework, user1_addr, mint_fee);
-    // launchpad::purchase<aptos_coin::AptosCoin>(purchaser, object::convert(listing));
+    // 7. Purchase NFT
+    let mint_fee = launchpad::get_mint_fee(collection_1, string::utf8(ALLOWLIST_MINT_STAGE_CATEGORY), 1);
+    aptos_coin::mint(aptos_framework, user2_addr, 1000);
+    launchpad::purchase<aptos_coin::AptosCoin>(user2, object::convert(listing));
 
-    // // 8. Verify purchase results
-    // assert!(object::owner(token) == purchaser_addr, 0);
-    // assert!(coin::balance<aptos_coin::AptosCoin>(seller_addr) == 10500, 0);
-    // assert!(coin::balance<aptos_coin::AptosCoin>(purchaser_addr) == 9500, 0);
+    // 8. Verify purchase results
+    assert!(object::owner(token) == user2_addr, 0);
+    // assert!(coin::balance<aptos_coin::AptosCoin>(user1_addr) == 10500, 0);
+    // assert!(coin::balance<aptos_coin::AptosCoin>(user2_addr) == 9500, 0);
 
     // 9. Test mint stages
     let active_or_next_stage = launchpad::get_active_or_next_mint_stage(collection_1);
@@ -231,6 +232,8 @@ fun test_happy_path(
     coin::destroy_burn_cap(burn_cap);
     coin::destroy_mint_cap(mint_cap);
 }
+
+
     #[test(aptos_framework = @0x1, sender = @launchpad_addr, user1 = @0x200)]
     #[expected_failure(abort_code = 12, location = launchpad)]
     fun test_mint_disabled(
