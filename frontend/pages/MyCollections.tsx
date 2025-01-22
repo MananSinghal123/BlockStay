@@ -18,17 +18,19 @@ export function MyCollections() {
 
   return (
     <>
-      <LaunchpadHeader title="My Collections" />
-      <Table className="max-w-screen-xl mx-auto">
+    <div className="w-full h-full bg-black
+    ">
+    <LaunchpadHeader title="My Collections" />
+      <Table className="max-w-screen-xl text-white bg-black mx-auto">
         {!collections.length && (
-          <TableCaption>A list of the collections created under the current contract.</TableCaption>
+          <TableCaption className="bg-black text-white">A list of the collections created under the current contract.</TableCaption>
         )}
-        <TableHeader>
-          <TableRow>
-            <TableHead>Collection</TableHead>
-            <TableHead>Collection Address</TableHead>
-            <TableHead>Minted NFTs</TableHead>
-            <TableHead>Max Supply</TableHead>
+        <TableHeader >
+          <TableRow className="text-white">
+            <TableHead className="text-white">Collection</TableHead>
+            <TableHead className="text-white">Collection Address</TableHead>
+            <TableHead className="text-white">Minted NFTs</TableHead>
+            <TableHead className="text-white">Max Supply</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -63,6 +65,8 @@ export function MyCollections() {
             })}
         </TableBody>
       </Table>
+    </div>
+      
     </>
   );
 }
