@@ -187,6 +187,16 @@ module launchpad_addr::launchpad {
         mint_fee_collector_addr: signer::address_of(sender),
 
      });
+      let constructor_ref = object::create_named_object(
+            sender,
+            APP_OBJECT_SEED,
+        );
+        let extend_ref = object::generate_extend_ref(&constructor_ref);
+        let marketplace_signer = &object::generate_signer(&constructor_ref);
+
+        move_to(marketplace_signer, MarketplaceSigner {
+            extend_ref,
+        });
   }
     // ================================= Entry Functions ================================= //
 
@@ -455,7 +465,7 @@ module launchpad_addr::launchpad {
         aptos_account::deposit_coins(seller, coins);
     }
 
-   public(friend) fun list_with_fixed_price_internal<CoinType>(
+   public fun list_with_fixed_price_internal<CoinType>(
         seller: &signer,
         object: object::Object<object::ObjectCore>,
         price: u64,        
@@ -785,6 +795,13 @@ module launchpad_addr::launchpad {
         );
     }
 
+   public fun initialize_marketplace_signer(marketplace: &signer) {
+    let marketplace_signer_cap = object::create_object_from_account(marketplace);
+    let extend_ref = object::generate_extend_ref(&marketplace_signer_cap);
+    move_to(marketplace, MarketplaceSigner { extend_ref });
+}
+
+
     /// Pay for mint
     fun pay_for_mint(sender: &signer, mint_fee: u64) acquires Config {
         if (mint_fee > 0) {
@@ -806,7 +823,7 @@ module launchpad_addr::launchpad {
     }
 
     /// Actual implementation of minting NFT
-    fun mint_nft_internal(
+    public fun mint_nft_internal(
         sender_addr: address,
         collection_obj: Object<Collection>,
     ): Object<Token> acquires CollectionConfig, CollectionOwnerObjConfig {
