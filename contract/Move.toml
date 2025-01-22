@@ -7,10 +7,20 @@ authors = []
 launchpad_addr = "_"
 initial_creator_addr = "_"
 minter = "_"
+marketplace_addr = "_"
+platform_creator_addr = "_" 
+
+[dev-addresses]
+launchpad_addr = "0x123"
+initial_creator_addr = "0x234"
+minter = "0x345"
+marketplace_addr = "0x456"
+platform_creator_addr = "0x567"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }
 AptosTokenObjects = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-token-objects" }
 TokenMinter = { git = "https://github.com/aptos-labs/token-minter.git", rev = "main", subdir = "token-minter" }
+
 
 [dev-dependencies]

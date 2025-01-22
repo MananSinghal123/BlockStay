@@ -1,8 +1,14 @@
 module launchpad_addr::launchpad {
+    use std::error;
     use std::option::{Self, Option};
     use std::signer;
     use std::string::{Self, String};
     use std::vector;
+    use aptos_std::smart_vector;
+    use aptos_framework::coin;
+    use aptos_framework::account;
+    use aptos_framework::aptos_coin;
+
 
     use aptos_std::simple_map::{Self, SimpleMap};
     use aptos_std::string_utils;
@@ -46,6 +52,12 @@ module launchpad_addr::launchpad {
     const EMINT_IS_DISABLED: u64 = 12;
     /// Cannot mint 0 amount
     const ECANNOT_MINT_ZERO: u64 = 13;
+     /// There exists no listing.
+    const ENO_LISTING: u64 = 1;
+    /// There exists no seller.
+    const ENO_SELLER: u64 = 2;
+     const APP_OBJECT_SEED: vector<u8> = b"LAUNCHPAD";
+
 
     /// Default to mint 0 amount to creator when creating collection
     const DEFAULT_PRE_MINT_AMOUNT: u64 = 0;
@@ -59,6 +71,38 @@ module launchpad_addr::launchpad {
     const ALLOWLIST_MINT_STAGE_CATEGORY: vector<u8> = b"Allowlist mint stage";
     /// Category for public mint stage
     const PUBLIC_MINT_MINT_STAGE_CATEGORY: vector<u8> = b"Public mint stage";
+
+     //List of sellers 
+    struct Sellers has key {
+        /// All addresses of sellers.
+        addresses: smart_vector::SmartVector<address>
+    }
+    
+    struct MarketplaceSigner has key {
+        extend_ref: object::ExtendRef,
+    }
+
+     #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+     struct Listing has key {
+        object: object::Object<object::ObjectCore>,   // The actual object being listed
+        seller: address,                              // The seller of the object
+        delete_ref: object::DeleteRef,                // Used for clean-up
+        extend_ref: object::ExtendRef,                // Used to extend reference for transfer
+        // expiration_time: u64,                         // Expiration time for the listing (NFT)
+
+    }
+
+   // Fixed price listing, now includes expiration time
+    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+    struct FixedPriceListing<phantom CoinType> has key {
+        price: u64,                                   // Price for the listing
+        // expiration_time: u64,                         // Expiration time for the listing (NFT)
+    }
+
+      // SellerListings struct with listings' addresses, now considering expiration
+    struct SellerListings has key {
+        listings: smart_vector::SmartVector<address>,  // Listings created by the seller
+    }
 
     #[event]
     struct CreateCollectionEvent has store, drop {
@@ -81,6 +125,8 @@ module launchpad_addr::launchpad {
         public_mint_fee_per_nft: Option<u64>,
     }
 
+
+    // Event for batch minting NFTs (bookings)
     #[event]
     struct BatchMintNftsEvent has store, drop {
         collection_obj: Object<Collection>,
@@ -96,21 +142,20 @@ module launchpad_addr::launchpad {
         recipient_addr: address,
     }
 
-    /// Unique per collection
-    /// We need this object to own the collection object instead of contract directly owns the collection object
-    /// This helps us avoid address collision when we create multiple collections with same name
+     // Collection owner object, now tracks expiration time for ownership
     struct CollectionOwnerObjConfig has key {
         collection_obj: Object<Collection>,
         extend_ref: object::ExtendRef,
+        // expiration_time: u64,  // Expiration for collection ownership
     }
 
-    /// Unique per collection
+ // Collection configuration, tracks mint fee per stage and expiration
     struct CollectionConfig has key {
-        // Key is stage, value is mint fee denomination
         mint_fee_per_nft_by_stages: SimpleMap<String, u64>,
         mint_enabled: bool,
         collection_owner_obj: Object<CollectionOwnerObjConfig>,
         extend_ref: object::ExtendRef,
+        // expiration_time: u64,  // Expiration for collection configuration
     }
 
     /// Global per contract
@@ -126,22 +171,23 @@ module launchpad_addr::launchpad {
         admin_addr: address,
         pending_admin_addr: Option<address>,
         mint_fee_collector_addr: address,
+        //  expiration_time: u64,  // Expiration time for the contract config (if needed)
     }
 
     /// If you deploy the module under an object, sender is the object's signer
     /// If you deploy the module under your own account, sender is your account's signer
-    fun init_module(sender: &signer) {
-        move_to(sender, Registry {
-            collection_objects: vector::empty()
-        });
-        move_to(sender, Config {
-            creator_addr: @initial_creator_addr,
-            admin_addr: signer::address_of(sender),
-            pending_admin_addr: option::none(),
-            mint_fee_collector_addr: signer::address_of(sender),
-        });
-    }
+   fun init_module(sender: &signer) {
+     move_to(sender, Registry {
+        collection_objects: vector::empty()
+     });
+     move_to(sender, Config {
+        creator_addr: @platform_creator_addr,
+        admin_addr: signer::address_of(sender),
+        pending_admin_addr: option::none(),
+        mint_fee_collector_addr: signer::address_of(sender),
 
+     });
+  }
     // ================================= Entry Functions ================================= //
 
     /// Update creator address
@@ -352,7 +398,142 @@ module launchpad_addr::launchpad {
         });
     }
 
+    /// List an time for sale at a fixed price.
+    public entry fun list_with_fixed_price<CoinType>(
+        seller: &signer,
+        object: object::Object<object::ObjectCore>,
+        price: u64,
+    ) acquires SellerListings, Sellers, MarketplaceSigner {
+        list_with_fixed_price_internal<CoinType>(seller, object, price);
+    }
+
+   /// Purchase outright an item from a fixed price listing.
+   public entry fun purchase<CoinType>(
+        purchaser: &signer,
+        object: object::Object<object::ObjectCore>,
+    ) acquires FixedPriceListing, Listing, SellerListings, Sellers {
+        let listing_addr = object::object_address(&object);
+
+        assert!(exists<Listing>(listing_addr), error::not_found(ENO_LISTING));
+        assert!(exists<FixedPriceListing<CoinType>>(listing_addr), error::not_found(ENO_LISTING));
+
+        let FixedPriceListing {
+            price,
+        } = move_from<FixedPriceListing<CoinType>>(listing_addr);
+
+        // The listing has concluded, transfer the asset and delete the listing. Returns the seller
+        // for depositing any profit.
+
+        let coins = coin::withdraw<CoinType>(purchaser, price);
+
+        let Listing {
+            object,
+            seller, // get seller from Listing object
+            delete_ref,
+            extend_ref,
+        } = move_from<Listing>(listing_addr);
+
+        let obj_signer = object::generate_signer_for_extending(&extend_ref);
+        object::transfer(&obj_signer, object, signer::address_of(purchaser));
+        object::delete(delete_ref); // Clean-up the listing object.
+
+        // Note this step of removing the listing from the seller's listings will be costly since it's O(N).
+        // Ideally you don't store the listings in a vector but in an off-chain indexer
+        let seller_listings = borrow_global_mut<SellerListings>(seller);
+        let (exist, idx) = smart_vector::index_of(&seller_listings.listings, &listing_addr);
+        assert!(exist, error::not_found(ENO_LISTING));
+        smart_vector::remove(&mut seller_listings.listings, idx);
+
+        if (smart_vector::length(&seller_listings.listings) == 0) {
+            // If the seller has no more listings, remove the seller from the marketplace.
+            let sellers = borrow_global_mut<Sellers>(get_marketplace_signer_addr());
+            let (exist, idx) = smart_vector::index_of(&sellers.addresses, &seller);
+            assert!(exist, error::not_found(ENO_SELLER));
+            smart_vector::remove(&mut sellers.addresses, idx);
+        };
+
+        aptos_account::deposit_coins(seller, coins);
+    }
+
+   public(friend) fun list_with_fixed_price_internal<CoinType>(
+        seller: &signer,
+        object: object::Object<object::ObjectCore>,
+        price: u64,        
+    ): object::Object<Listing> acquires SellerListings, Sellers, MarketplaceSigner {
+        let constructor_ref = object::create_object(signer::address_of(seller));
+
+        let transfer_ref = object::generate_transfer_ref(&constructor_ref);
+        object::disable_ungated_transfer(&transfer_ref);
+
+        let listing_signer = object::generate_signer(&constructor_ref);
+
+        let listing = Listing {
+            object,
+            seller: signer::address_of(seller),
+            delete_ref: object::generate_delete_ref(&constructor_ref),
+            extend_ref: object::generate_extend_ref(&constructor_ref),
+        };
+        let fixed_price_listing = FixedPriceListing<CoinType> {
+            price,
+        };
+        move_to(&listing_signer, listing);
+        move_to(&listing_signer, fixed_price_listing);
+
+        object::transfer(seller, object, signer::address_of(&listing_signer));
+
+        let listing = object::object_from_constructor_ref(&constructor_ref);
+
+        if (exists<SellerListings>(signer::address_of(seller))) {
+            let seller_listings = borrow_global_mut<SellerListings>(signer::address_of(seller));
+            smart_vector::push_back(&mut seller_listings.listings, object::object_address(&listing));
+        } else {
+            let seller_listings = SellerListings {
+                listings: smart_vector::new(),
+            };
+            smart_vector::push_back(&mut seller_listings.listings, object::object_address(&listing));
+            move_to(seller, seller_listings);
+        };
+        if (exists<Sellers>(get_marketplace_signer_addr())) {
+            let sellers = borrow_global_mut<Sellers>(get_marketplace_signer_addr());
+            if (!smart_vector::contains(&sellers.addresses, &signer::address_of(seller))) {
+                smart_vector::push_back(&mut sellers.addresses, signer::address_of(seller));
+            }
+        } else {
+            let sellers = Sellers {
+                addresses: smart_vector::new(),
+            };
+            smart_vector::push_back(&mut sellers.addresses, signer::address_of(seller));
+            move_to(&get_marketplace_signer(get_marketplace_signer_addr()), sellers);
+        };
+
+        listing
+    }
+
     // ================================= View  ================================= //
+
+   public fun listing(object: object::Object<Listing>): (object::Object<object::ObjectCore>, address) acquires Listing {
+        let listing = borrow_listing(object);
+        (listing.object, listing.seller)
+    }
+
+    #[view]
+    public fun get_seller_listings(seller: address): vector<address> acquires SellerListings {
+        if (exists<SellerListings>(seller)) {
+            smart_vector::to_vector(&borrow_global<SellerListings>(seller).listings)
+        } else {
+            vector[]
+        }
+    }
+
+    #[view]
+    public fun get_sellers(): vector<address> acquires Sellers {
+        if (exists<Sellers>(get_marketplace_signer_addr())) {
+            smart_vector::to_vector(&borrow_global<Sellers>(get_marketplace_signer_addr()).addresses)
+        } else {
+            vector[]
+        }
+    }
+
 
     #[view]
     /// Get creator, creator is the address that is allowed to create collections
@@ -469,6 +650,52 @@ module launchpad_addr::launchpad {
     }
 
     /// Check if sender is allowed to create collections
+     fun get_marketplace_signer_addr(): address {
+        object::create_object_address(&@launchpad_addr, APP_OBJECT_SEED)
+    }
+
+    fun get_marketplace_signer(marketplace_signer_addr: address): signer acquires MarketplaceSigner {
+        object::generate_signer_for_extending(&borrow_global<MarketplaceSigner>(marketplace_signer_addr).extend_ref)
+    }
+
+     public inline fun setup(
+        aptos_framework: &signer,
+        marketplace: &signer,
+        seller: &signer,
+        purchaser: &signer,
+    ): (address, address, address) {
+        // marketplace::setup_test(marketplace);
+        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
+
+        let marketplace_addr = signer::address_of(marketplace);
+        account::create_account_for_test(marketplace_addr);
+        coin::register<aptos_coin::AptosCoin>(marketplace);
+
+        let seller_addr = signer::address_of(seller);
+        account::create_account_for_test(seller_addr);
+        coin::register<aptos_coin::AptosCoin>(seller);
+
+        let purchaser_addr = signer::address_of(purchaser);
+        account::create_account_for_test(purchaser_addr);
+        coin::register<aptos_coin::AptosCoin>(purchaser);
+
+        let coins = coin::mint(10000, &mint_cap);
+        coin::deposit(seller_addr, coins);
+        let coins = coin::mint(10000, &mint_cap);
+        coin::deposit(purchaser_addr, coins);
+
+        coin::destroy_burn_cap(burn_cap);
+        coin::destroy_mint_cap(mint_cap);
+
+        (marketplace_addr, seller_addr, purchaser_addr)
+    }
+
+    inline fun borrow_listing(object: object::Object<Listing>): &Listing acquires Listing {
+        let obj_addr = object::object_address(&object);
+        assert!(exists<Listing>(obj_addr), error::not_found(ENO_LISTING));
+        borrow_global<Listing>(obj_addr)
+    }
+
     fun is_creator(config: &Config, sender: address): bool {
         sender == config.creator_addr
     }
