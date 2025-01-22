@@ -128,15 +128,16 @@ export function CreateCollection() {
 
   return (
     <>
+     
+      <div className="w-full h-full bg-black overflow-hidden">
       <LaunchpadHeader title="Create New Collection" />
-
-      <div className="flex flex-col md:flex-row items-start justify-between px-4 py-2 gap-4 max-w-screen-xl mx-auto">
+      <div className="flex flex-wrap flex-col md:flex-row items-center justify-center px-4 py-2 gap-4 sm:w-[22.1rem] h-[38.5rem] bg-black mx-auto ">
         <div className="w-full md:w-2/3 flex flex-col gap-y-4 order-2 md:order-1">
           {(!account || account.address !== CREATOR_ADDRESS) && (
             <WarningAlert title={account ? "Wrong account connected" : "No account connected"}>
               To continue with creating your collection, make sure you are connected with a Wallet and with the same
               profile account as in your COLLECTION_CREATOR_ADDRESS in{" "}
-              <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+              <code className="relative rounded bg-muted bg-black px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
                 .env
               </code>{" "}
               file
@@ -151,12 +152,12 @@ export function CreateCollection() {
 
           <UploadSpinner on={isUploading} />
 
-          <Card>
+          <Card className="bg-black">
             <CardHeader>
               <CardDescription>Uploads collection files to Irys, a decentralized storage</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-start justify-between">
+              <div className="flex flex-col items-start justify-between bg-black">
                 {!files?.length && (
                   <Label
                     htmlFor="upload"
@@ -169,7 +170,7 @@ export function CreateCollection() {
                   </Label>
                 )}
                 <Input
-                  className="hidden"
+                  className="hidden text-white"
                   ref={inputRef}
                   id="upload"
                   disabled={isUploading || !account || !wallet || isAptosConnectWallet(wallet)}
@@ -187,7 +188,7 @@ export function CreateCollection() {
                     {files.length} files selected{" "}
                     <Button
                       variant="link"
-                      className="text-destructive"
+                      className="text-destructive text-white"
                       onClick={() => {
                         setFiles(null);
                         inputRef.current!.value = "";
@@ -211,7 +212,7 @@ export function CreateCollection() {
               onDateChange={setPublicMintStartDate}
               time={publicMintStartTime}
               onTimeChange={onPublicMintStartTime}
-              className="basis-1/2"
+              className="basis-1/2 text-white"
             />
 
             <DateTimeInput
@@ -223,11 +224,11 @@ export function CreateCollection() {
               onDateChange={setPublicMintEndDate}
               time={publicMintEndTime}
               onTimeChange={onPublicMintEndTime}
-              className="basis-1/2"
+              className="basis-1/2 text-white"
             />
           </div>
 
-          <LabeledInput
+          {/* <LabeledInput
             id="mint-limit"
             required
             label="Mint limit per address"
@@ -236,9 +237,9 @@ export function CreateCollection() {
             onChange={(e) => {
               setPublicMintLimitPerAccount(parseInt(e.target.value));
             }}
-          />
+          /> */}
 
-          <LabeledInput
+          {/* <LabeledInput
             id="royalty-percentage"
             label="Royalty Percentage"
             tooltip="The percentage of trading value that collection creator gets when an NFT is sold on marketplaces"
@@ -246,7 +247,7 @@ export function CreateCollection() {
             onChange={(e) => {
               setRoyaltyPercentage(parseInt(e.target.value));
             }}
-          />
+          /> */}
 
           <LabeledInput
             id="mint-fee"
@@ -293,17 +294,10 @@ export function CreateCollection() {
             }
           />
         </div>
-        <div className="w-full md:w-1/3 order-1 md:order-2">
-          <Card>
-            <CardHeader className="body-md-semibold">Learn More</CardHeader>
-            <CardContent>
-              <Link to="https://aptos.dev/standards/digital-asset" className="body-sm underline" target="_blank">
-                Find out more about Digital Assets on Aptos
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
+        
       </div>
+      </div>
+      
     </>
   );
 }

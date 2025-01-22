@@ -13,6 +13,17 @@ module.exports = {
         "2xl": "1400px",
       },
     },
+    screens: {
+        "xsm": "540px",
+        "uxsm":"400px",
+        "muxsm":"300px",
+        "sm":"640",
+        "md": "768",
+        "lg": "1024",
+        "xl": "1280",
+        "2xl": "1536",
+  
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

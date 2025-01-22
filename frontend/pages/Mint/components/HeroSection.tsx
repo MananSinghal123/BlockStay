@@ -78,17 +78,17 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
                 value={nftCount}
                 onChange={(e) => setNftCount(parseInt(e.currentTarget.value, 10))}
               />
-              <Button className="h-16 md:h-auto" type="submit" disabled={!data?.isMintActive}>
-                Mint
+              <Button className="h-16 md:h-auto text-white" type="submit" disabled={!data?.isMintActive}>
+                Room
               </Button>
             </form>
             <div className="flex flex-col gap-2 w-full md:basis-1/3">
-              <p className="label-sm">You can mint up to</p>
-              <p className="body-md">{mintUpTo > 1 ? `${mintUpTo} NFTs` : `${mintUpTo} NFT`}</p>
+              <p className="label-sm text-white">You can Book up to</p>
+              <p className="body-md">{mintUpTo > 1 ? `${mintUpTo} Rooms` : `${mintUpTo} Rooms`}</p>
             </div>
             <div className="flex flex-col gap-2 w-full md:basis-1/3">
-              <p className="label-sm text-secondary-text">
-                {clampNumber(totalMinted)} / {clampNumber(maxSupply)} Minted
+              <p className="label-sm text-secondary-text text-white">
+                {clampNumber(totalMinted)} / {clampNumber(maxSupply)} Booked
               </p>
               <Progress value={(totalMinted / maxSupply) * 100} className="h-2" />
             </div>
