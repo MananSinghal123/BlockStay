@@ -5,9 +5,9 @@ import { aptosClient } from "@/utils/aptosClient";
 import { getActiveOrNextMintStage } from "@/view-functions/getActiveOrNextMintStage";
 import { getMintStageStartAndEndTime } from "@/view-functions/getMintStageStartAndEndTime";
 import { getUserMintBalance } from "@/view-functions/getUserMintBalance";
-import { COLLECTION_ADDRESS } from "@/constants";
+// import { COLLECTION_ADDRESS } from "@/constants";
 import { getMintEnabled } from "@/view-functions/getMintEnabled";
-
+import { useCollection } from "@/Contexts/CollectionContext";
 export interface Token {
   token_name: string;
   cdn_asset_uris: {
@@ -56,20 +56,21 @@ interface MintData {
   isMintInfinite: boolean;
 }
 
-export function useGetCollectionData(collection_address: string = COLLECTION_ADDRESS) {
+export function useGetCollectionData() {
   const { account } = useWallet();
+  const { collectionAddress } = useCollection();
 
   return useQuery({
-    queryKey: ["app-state", collection_address],
+    queryKey: ["app-state", collectionAddress],
     refetchInterval: 1000 * 30,
     queryFn: async () => {
       try {
-        if (!collection_address) return null;
+        if (!collectionAddress) return null;
 
         const res = await aptosClient().queryIndexer<MintQueryResult>({
           query: {
             variables: {
-              collection_id: collection_address,
+              collection_id: collectionAddress,
             },
             query: `
 						query TokenQuery($collection_id: String) {
@@ -97,7 +98,7 @@ export function useGetCollectionData(collection_address: string = COLLECTION_ADD
         const collection = res.current_collections_v2[0];
         if (!collection) return null;
 
-        const mintStageRes = await getActiveOrNextMintStage({ collection_address });
+        const mintStageRes = await getActiveOrNextMintStage({ collectionAddress });
 
         // Only return collection data if no mint stage is found
         if (mintStageRes.length === 0) {
@@ -115,14 +116,14 @@ export function useGetCollectionData(collection_address: string = COLLECTION_ADD
 
         const mint_stage = mintStageRes[0];
         const { startDate, endDate, isMintInfinite } = await getMintStageStartAndEndTime({
-          collection_address,
+          collectionAddress,
           mint_stage,
         });
         const userMintBalance =
           account == null
             ? 0
-            : await getUserMintBalance({ user_address: account.address, collection_address, mint_stage });
-        const isMintEnabled = await getMintEnabled({ collection_address });
+            : await getUserMintBalance({ user_address: account.address, collectionAddress, mint_stage });
+        const isMintEnabled = await getMintEnabled({ collectionAddress });
 
         return {
           maxSupply: collection.max_supply ?? 0,

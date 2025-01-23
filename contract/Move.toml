@@ -10,6 +10,13 @@ authors = []
 # platform_creator_addr = "_" 
 # marketplace_addr = "_"
 
+[dev-addresses]
+launchpad_addr = "0x1234"
+initial_creator_addr = "0x5678"
+minter = "0x9abc"
+platform_creator_addr = "0xdef0" 
+marketplace_addr = "0x4321"
+
 [addresses]
 launchpad_addr = "0x123"
 initial_creator_addr = "0x234"

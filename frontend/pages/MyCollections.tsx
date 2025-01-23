@@ -9,12 +9,16 @@ import { useGetCollections } from "@/hooks/useGetCollections";
 // Internal constants
 import { IS_PROD, NETWORK } from "@/constants";
 
+import { useCollection } from "@/Contexts/CollectionContext";
+
 export function MyCollections() {
   const collections: Array<GetCollectionDataResponse> = useGetCollections();
-
-  // If we are on Production mode, redierct to the mint page
   const navigate = useNavigate();
+  const { setCollectionAddress } = useCollection();
   if (IS_PROD) navigate("/", { replace: true });
+  const handleCollectionClick = (collectionId: string) => {
+    setCollectionAddress(collectionId);
+  };
 
   return (
     <>
@@ -58,6 +62,7 @@ export function MyCollections() {
                         to={`https://explorer.aptoslabs.com/object/${collection?.collection_id}?network=${NETWORK}`}
                         target="_blank"
                         style={{ textDecoration: "underline" }}
+                        onClick={() => handleCollectionClick(collection?.collection_id)}
                       >
                         {collection?.collection_id}
                       </Link>
