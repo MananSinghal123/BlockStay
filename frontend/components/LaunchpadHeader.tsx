@@ -18,7 +18,7 @@ export const LaunchpadHeader: FC<LaunchpadHeaderProps> = ({ title }) => {
           Book Page
         </Link>
         <Link className={buttonVariants({ variant: "link", className: "text-white" })} to={"/my-collections"}>
-          My Hotels
+          All Hotels
         </Link>
         <Link className={buttonVariants({ variant: "link", className: "text-white" })} to={"/create-collection"}>
           List Hotel

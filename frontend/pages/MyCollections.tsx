@@ -26,7 +26,7 @@ export function MyCollections() {
         className="w-full h-full bg-black
     "
       >
-        <LaunchpadHeader title="My Collections" />
+        <LaunchpadHeader title="My Hotels" />
         <Table className="max-w-screen-xl text-white bg-black mx-auto">
           {!collections.length && (
             <TableCaption className="bg-black text-white">
@@ -58,9 +58,12 @@ export function MyCollections() {
                       </div>
                     </TableCell>
                     <TableCell>
+                      {/* <Link className={buttonVariants({ variant: "link", className: "text-white" })} to={"/"}>
+                        {collection?.collection_id}
+                      </Link> */}
                       <Link
-                        to={`https://explorer.aptoslabs.com/object/${collection?.collection_id}?network=${NETWORK}`}
-                        target="_blank"
+                        to={"/"}
+                        // target="_blank"
                         style={{ textDecoration: "underline" }}
                         onClick={() => handleCollectionClick(collection?.collection_id)}
                       >
