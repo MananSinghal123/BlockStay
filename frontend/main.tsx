@@ -12,16 +12,28 @@ import { WrongNetworkAlert } from "@/components/WrongNetworkAlert";
 
 const queryClient = new QueryClient();
 
+const AppContext = React.createContext({});
+const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const value = {
+    user: null, // Example context value
+    setUser: () => {}, // Example setter for context value
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <WalletProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider delayDuration={100}>
-          <App />
-          <WrongNetworkAlert />
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
-    </WalletProvider>
+    <AppContextProvider>
+      <WalletProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider delayDuration={100}>
+            <App />
+            <WrongNetworkAlert />
+            <Toaster />
+          </TooltipProvider>
+        </QueryClientProvider>
+      </WalletProvider>
+    </AppContextProvider>
   </React.StrictMode>,
 );

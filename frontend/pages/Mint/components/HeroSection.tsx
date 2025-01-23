@@ -25,7 +25,7 @@ import { Progress } from "@/components/ui/progress";
 // import { config } from "@/config";
 // Internal enrty functions
 import { mintNFT } from "@/entry-functions/mint_nft";
-import image from "../../../assets/icons/Gemini_Generated_Image_x2oto6x2oto6x2ot.jpeg"
+import image from "../../../assets/icons/Gemini_Generated_Image_x2oto6x2oto6x2ot.jpeg";
 
 interface HeroSectionProps {}
 
@@ -62,9 +62,13 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
 
       <div className="basis-3/5 flex flex-col gap-4">
         <h1 className="title-md text-white mt-[2rem]">Welcome to Exchange</h1>
-        {/* {collection?.collection_name ?? config.defaultCollection?.name} this was written on top*/} 
+        {/* {collection?.collection_name ?? config.defaultCollection?.name} this was written on top*/}
         {/* <Socials /> */}
-        <p className="body-sm text-white">Imagine a world where canceling a hotel room doesn't mean losing money. 🤯 With blockchain-powered NFT bookings, you can list your reservation on a decentralized exchange and recoup your costs. It's a win-win for travelers!</p>
+        <p className="body-sm text-white">
+          Imagine a world where canceling a hotel room doesn't mean losing money. 🤯 With blockchain-powered NFT
+          bookings, you can list your reservation on a decentralized exchange and recoup your costs. It's a win-win for
+          travelers!
+        </p>
         {/* {collection?.description ?? config.defaultCollection?.description} */}
         <Card>
           <CardContent
@@ -96,10 +100,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         </Card>
 
         <div className="flex gap-x-2 items-center flex-wrap justify-between">
-          <p className="whitespace-nowrap body-sm-semibold text-white">Collection Address</p>
+          <p className="whitespace-nowrap body-sm-semibold text-white">Hotel Address</p>
 
-          <div className="flex gap-x-2">
-            <AddressButton  address={collection?.collection_id ?? ""} />
+          <div className="flex gap-x-2 ">
+            <AddressButton address={collection?.collection_id ?? ""} />
             {/* <a
               className={buttonVariants({ variant: "link" })}
               target="_blank"
@@ -113,19 +117,19 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
         <div>
           {data?.startDate && new Date() < data.startDate && (
             <div className="flex gap-x-2 justify-between flex-wrap">
-              <p className="body-sm-semibold">Minting starts</p>
+              <p className="body-sm-semibold">Booking starts</p>
               <p className="body-sm">{formatDate(data.startDate)}</p>
             </div>
           )}
 
           {data?.endDate && new Date() < data.endDate && !data.isMintInfinite && (
             <div className="flex gap-x-2 justify-between flex-wrap">
-              <p className="body-sm-semibold">Minting ends</p>
-              <p className="body-sm">{formatDate(data.endDate)}</p>
+              <p className="body-sm-semibold text-white">Booking ends</p>
+              <p className="body-sm text-white">{formatDate(data.endDate)}</p>
             </div>
           )}
 
-          {data?.endDate && new Date() > data.endDate && <p className="body-sm-semibold">Minting has ended</p>}
+          {data?.endDate && new Date() > data.endDate && <p className="body-sm-semibold">Booking has ended</p>}
         </div>
       </div>
     </section>

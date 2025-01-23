@@ -18,55 +18,58 @@ export function MyCollections() {
 
   return (
     <>
-    <div className="w-full h-full bg-black
-    ">
-    <LaunchpadHeader title="My Collections" />
-      <Table className="max-w-screen-xl text-white bg-black mx-auto">
-        {!collections.length && (
-          <TableCaption className="bg-black text-white">A list of the collections created under the current contract.</TableCaption>
-        )}
-        <TableHeader >
-          <TableRow className="text-white">
-            <TableHead className="text-white">Collection</TableHead>
-            <TableHead className="text-white">Collection Address</TableHead>
-            <TableHead className="text-white">Minted NFTs</TableHead>
-            <TableHead className="text-white">Max Supply</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {collections.length > 0 &&
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            collections.map((collection: any) => {
-              return (
-                <TableRow key={collection?.collection_id}>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Image
-                        src={collection?.cdn_asset_uris?.cdn_image_uri ?? ""}
-                        rounded
-                        className="w-10 h-10 bg-gray-100 shrink-0"
-                      />
-                      <span>{collection?.collection_name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      to={`https://explorer.aptoslabs.com/object/${collection?.collection_id}?network=${NETWORK}`}
-                      target="_blank"
-                      style={{ textDecoration: "underline" }}
-                    >
-                      {collection?.collection_id}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{collection?.total_minted_v2}</TableCell>
-                  <TableCell>{collection?.max_supply}</TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    </div>
-      
+      <div
+        className="w-full h-full bg-black
+    "
+      >
+        <LaunchpadHeader title="My Collections" />
+        <Table className="max-w-screen-xl text-white bg-black mx-auto">
+          {!collections.length && (
+            <TableCaption className="bg-black text-white">
+              A list of the collections created under the current contract.
+            </TableCaption>
+          )}
+          <TableHeader>
+            <TableRow className="text-white">
+              <TableHead className="text-white">Hotel</TableHead>
+              <TableHead className="text-white">Hotel Address</TableHead>
+              <TableHead className="text-white">Rooms Booked</TableHead>
+              <TableHead className="text-white">Rooms Available</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {collections.length > 0 &&
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              collections.map((collection: any) => {
+                return (
+                  <TableRow key={collection?.collection_id}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Image
+                          src={collection?.cdn_asset_uris?.cdn_image_uri ?? ""}
+                          rounded
+                          className="w-10 h-10 bg-gray-100 shrink-0"
+                        />
+                        <span>{collection?.collection_name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        to={`https://explorer.aptoslabs.com/object/${collection?.collection_id}?network=${NETWORK}`}
+                        target="_blank"
+                        style={{ textDecoration: "underline" }}
+                      >
+                        {collection?.collection_id}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{collection?.total_minted_v2}</TableCell>
+                    <TableCell>{collection?.max_supply}</TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 }

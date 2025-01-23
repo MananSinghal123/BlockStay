@@ -128,107 +128,106 @@ export function CreateCollection() {
 
   return (
     <>
-     
       <div className="w-full h-full bg-black overflow-hidden">
-      <LaunchpadHeader title="Create New Collection" />
-      <div className="flex flex-wrap flex-col md:flex-row items-center justify-center px-4 py-2 gap-4 sm:w-[22.1rem] h-[38.5rem] bg-black mx-auto ">
-        <div className="w-full md:w-2/3 flex flex-col gap-y-4 order-2 md:order-1">
-          {(!account || account.address !== CREATOR_ADDRESS) && (
-            <WarningAlert title={account ? "Wrong account connected" : "No account connected"}>
-              To continue with creating your collection, make sure you are connected with a Wallet and with the same
-              profile account as in your COLLECTION_CREATOR_ADDRESS in{" "}
-              <code className="relative rounded bg-muted bg-black px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
-                .env
-              </code>{" "}
-              file
-            </WarningAlert>
-          )}
+        <LaunchpadHeader title="Create New Collection" />
+        <div className="flex flex-wrap flex-col md:flex-row items-center justify-center px-4 py-2 gap-4 sm:w-[22.1rem] h-[38.5rem] bg-black mx-auto ">
+          <div className="w-full md:w-2/3 flex flex-col gap-y-4 order-2 md:order-1">
+            {(!account || account.address !== CREATOR_ADDRESS) && (
+              <WarningAlert title={account ? "Wrong account connected" : "No account connected"}>
+                To continue with creating your collection, make sure you are connected with a Wallet and with the same
+                profile account as in your COLLECTION_CREATOR_ADDRESS in{" "}
+                <code className="relative rounded bg-muted bg-black px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+                  .env
+                </code>{" "}
+                file
+              </WarningAlert>
+            )}
 
-          {wallet && isAptosConnectWallet(wallet) && (
-            <WarningAlert title="Wallet not supported">
-              Google account is not supported when creating a NFT collection. Please use a different wallet.
-            </WarningAlert>
-          )}
+            {wallet && isAptosConnectWallet(wallet) && (
+              <WarningAlert title="Wallet not supported">
+                Google account is not supported when creating a NFT collection. Please use a different wallet.
+              </WarningAlert>
+            )}
 
-          <UploadSpinner on={isUploading} />
+            <UploadSpinner on={isUploading} />
 
-          <Card className="bg-black">
-            <CardHeader>
-              <CardDescription>Uploads collection files to Irys, a decentralized storage</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-start justify-between bg-black">
-                {!files?.length && (
-                  <Label
-                    htmlFor="upload"
-                    className={buttonVariants({
-                      variant: "outline",
-                      className: "cursor-pointer",
-                    })}
-                  >
-                    Choose Folder to Upload
-                  </Label>
-                )}
-                <Input
-                  className="hidden text-white"
-                  ref={inputRef}
-                  id="upload"
-                  disabled={isUploading || !account || !wallet || isAptosConnectWallet(wallet)}
-                  webkitdirectory="true"
-                  multiple
-                  type="file"
-                  placeholder="Upload Assets"
-                  onChange={(event) => {
-                    setFiles(event.currentTarget.files);
-                  }}
-                />
-
-                {!!files?.length && (
-                  <div>
-                    {files.length} files selected{" "}
-                    <Button
-                      variant="link"
-                      className="text-destructive text-white"
-                      onClick={() => {
-                        setFiles(null);
-                        inputRef.current!.value = "";
-                      }}
+            <Card className="bg-black">
+              <CardHeader>
+                <CardDescription>Uploads collection files to Irys, a decentralized storage</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col items-start justify-between bg-black">
+                  {!files?.length && (
+                    <Label
+                      htmlFor="upload"
+                      className={buttonVariants({
+                        variant: "outline",
+                        className: "cursor-pointer",
+                      })}
                     >
-                      Clear
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                      Choose Folder to Upload
+                    </Label>
+                  )}
+                  <Input
+                    className="hidden text-white"
+                    ref={inputRef}
+                    id="upload"
+                    disabled={isUploading || !account || !wallet || isAptosConnectWallet(wallet)}
+                    webkitdirectory="true"
+                    multiple
+                    type="file"
+                    placeholder="Upload Assets"
+                    onChange={(event) => {
+                      setFiles(event.currentTarget.files);
+                    }}
+                  />
 
-          <div className="flex item-center gap-4 mt-4">
-            <DateTimeInput
-              id="mint-start"
-              label="Public mint start date"
-              tooltip="When minting becomes active"
-              disabled={isUploading || !account}
-              date={publicMintStartDate}
-              onDateChange={setPublicMintStartDate}
-              time={publicMintStartTime}
-              onTimeChange={onPublicMintStartTime}
-              className="basis-1/2 text-white"
-            />
+                  {!!files?.length && (
+                    <div>
+                      {files.length} files selected{" "}
+                      <Button
+                        variant="link"
+                        className="text-destructive text-white"
+                        onClick={() => {
+                          setFiles(null);
+                          inputRef.current!.value = "";
+                        }}
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
 
-            <DateTimeInput
-              id="mint-end"
-              label="Public mint end date"
-              tooltip="When minting finishes"
-              disabled={isUploading || !account}
-              date={publicMintEndDate}
-              onDateChange={setPublicMintEndDate}
-              time={publicMintEndTime}
-              onTimeChange={onPublicMintEndTime}
-              className="basis-1/2 text-white"
-            />
-          </div>
+            <div className="flex item-center gap-4 mt-4">
+              <DateTimeInput
+                id="mint-start"
+                label="Hotel Booking Start date"
+                tooltip="When minting becomes active"
+                disabled={isUploading || !account}
+                date={publicMintStartDate}
+                onDateChange={setPublicMintStartDate}
+                time={publicMintStartTime}
+                onTimeChange={onPublicMintStartTime}
+                className="basis-1/2 text-white"
+              />
 
-          {/* <LabeledInput
+              <DateTimeInput
+                id="mint-end"
+                label="Hotel Booking end date"
+                tooltip="When minting finishes"
+                disabled={isUploading || !account}
+                date={publicMintEndDate}
+                onDateChange={setPublicMintEndDate}
+                time={publicMintEndTime}
+                onTimeChange={onPublicMintEndTime}
+                className="basis-1/2 text-white"
+              />
+            </div>
+
+            {/* <LabeledInput
             id="mint-limit"
             required
             label="Mint limit per address"
@@ -239,7 +238,7 @@ export function CreateCollection() {
             }}
           /> */}
 
-          {/* <LabeledInput
+            {/* <LabeledInput
             id="royalty-percentage"
             label="Royalty Percentage"
             tooltip="The percentage of trading value that collection creator gets when an NFT is sold on marketplaces"
@@ -249,55 +248,53 @@ export function CreateCollection() {
             }}
           /> */}
 
-          <LabeledInput
-            id="mint-fee"
-            label="Mint fee per NFT in APT"
-            tooltip="The fee the nft minter is paying the collection creator when they mint an NFT, denominated in APT"
-            disabled={isUploading || !account}
-            onChange={(e) => {
-              setPublicMintFeePerNFT(Number(e.target.value));
-            }}
-          />
+            <LabeledInput
+              id="mint-fee"
+              label="Mint fee per Room in APT"
+              tooltip="The fee the nft minter is paying the collection creator when they mint an NFT, denominated in APT"
+              disabled={isUploading || !account}
+              onChange={(e) => {
+                setPublicMintFeePerNFT(Number(e.target.value));
+              }}
+            />
 
-          <LabeledInput
-            id="for-myself"
-            label="Mint for myself"
-            tooltip="How many NFTs to mint immediately for the creator"
-            disabled={isUploading || !account}
-            onChange={(e) => {
-              setPreMintAmount(parseInt(e.target.value));
-            }}
-          />
+            <LabeledInput
+              id="for-myself"
+              label="Mint for myself"
+              tooltip="How many NFTs to mint immediately for the creator"
+              disabled={isUploading || !account}
+              onChange={(e) => {
+                setPreMintAmount(parseInt(e.target.value));
+              }}
+            />
 
-          <ConfirmButton
-            title="Create Collection"
-            className="self-start"
-            onSubmit={onCreateCollection}
-            disabled={
-              !account ||
-              !files?.length ||
-              !publicMintStartDate ||
-              !publicMintLimitPerAccount ||
-              !account ||
-              isUploading
-            }
-            confirmMessage={
-              <>
-                <p>The upload process requires at least 2 message signatures</p>
-                <ol className="list-decimal list-inside">
-                  <li>To upload collection cover image file and NFT image files into Irys.</li>
+            <ConfirmButton
+              title="List Hotel"
+              className="self-start"
+              onSubmit={onCreateCollection}
+              disabled={
+                !account ||
+                !files?.length ||
+                !publicMintStartDate ||
+                !publicMintLimitPerAccount ||
+                !account ||
+                isUploading
+              }
+              confirmMessage={
+                <>
+                  <p>The upload process requires at least 2 message signatures</p>
+                  <ol className="list-decimal list-inside">
+                    <li>To upload collection cover image file and NFT image files into Irys.</li>
 
-                  <li>To upload collection metadata file and NFT metadata files into Irys.</li>
-                </ol>
-                <p>In the case we need to fund a node on Irys, a transfer transaction submission is required also.</p>
-              </>
-            }
-          />
+                    <li>To upload collection metadata file and NFT metadata files into Irys.</li>
+                  </ol>
+                  <p>In the case we need to fund a node on Irys, a transfer transaction submission is required also.</p>
+                </>
+              }
+            />
+          </div>
         </div>
-        
       </div>
-      </div>
-      
     </>
   );
 }

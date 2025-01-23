@@ -16,20 +16,22 @@ export function Header() {
   return (
     <div className="flex bg-black items-center justify-between px-4 py-2 max-w-screen-xl mx-auto w-full flex-wrap">
       <h1 className="display">
-        <Link className="text-white" to="/">Hotel Coin Exchange</Link>
+        <Link className="text-white" to="/">
+          Hotel Coin Exchange
+        </Link>
       </h1>
 
       <div className="flex gap-2  items-center flex-wrap">
         {IS_DEV && (
           <>
             <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/"}>
-              Mint Page
+              Book Page
             </Link>
             <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/my-collections"}>
-              My Collections
+              My Hotels
             </Link>
             <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/create-collection"}>
-              Create Collection
+              List Hotel
             </Link>
           </>
         )}

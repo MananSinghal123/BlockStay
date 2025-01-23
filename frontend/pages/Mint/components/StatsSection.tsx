@@ -15,8 +15,8 @@ export const StatsSection: React.FC<StatsSectionProps> = () => {
     <section className="stats-container bg-black px-4 max-w-screen-xl mx-auto w-full">
       <ul className="flex flex-col md:flex-row gap-6">
         {[
-          { title: "Created NFTs", value: maxSupply },
-          { title: "Total Minted", value: totalMinted },
+          { title: "Available Rooms", value: maxSupply },
+          { title: "Total Rooms", value: totalMinted },
         ].map(({ title, value }) => (
           <li className="basis-1/2 " key={title + " " + value}>
             <Card className="py-2 bg-[#a0522d] px-4 " shadow="md">
