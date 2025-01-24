@@ -33,6 +33,9 @@ export function Header() {
             <Link className={`${buttonVariants({ variant: "link" })} text-white`} to={"/create-collection"}>
               List Hotel
             </Link>
+            <Link className={buttonVariants({ variant: "link", className: "text-white" })} to={"/portfolio"}>
+              Listings
+            </Link>
           </>
         )}
         <WalletSelector />

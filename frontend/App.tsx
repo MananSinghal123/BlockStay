@@ -3,7 +3,8 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Mint } from "@/pages/Mint";
 import { CreateCollection } from "@/pages/CreateCollection";
 import { MyCollections } from "@/pages/MyCollections";
-import { TopBanner } from "./components/TopBanner";
+// import { TopBanner } from "./components/TopBanner";
+import Portfolio from "@/pages/Portfolio";
 import { IS_DEV } from "./constants";
 
 function Layout() {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
         path: "my-collections",
         element: <MyCollections />,
       },
+      {
+        path: 'portfolio',
+        element: <Portfolio />
+      }
     ],
   },
 ]);
