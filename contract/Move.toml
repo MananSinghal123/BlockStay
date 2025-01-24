@@ -3,12 +3,12 @@ name = "digital_asset_launchpad"
 version = "1.0.0"
 authors = []
 
-# [addresses]
-# launchpad_addr = "_"
-# initial_creator_addr = "_"
-# minter = "_"
-# platform_creator_addr = "_" 
-# marketplace_addr = "_"
+[addresses]
+launchpad_addr = "_"
+initial_creator_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
+minter = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
+platform_creator_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f" 
+marketplace_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
 
 [dev-addresses]
 launchpad_addr = "0x1234"
@@ -17,13 +17,12 @@ minter = "0x9abc"
 platform_creator_addr = "0xdef0" 
 marketplace_addr = "0x4321"
 
-[addresses]
-launchpad_addr = "0x1234"
-initial_creator_addr = "0x5678"
-minter = "0x9abc"
-marketplace_addr = "0x4321"
-platform_creator_addr = "0xdef0"
-
+# [addresses]
+# launchpad_addr = "0x1234"
+# initial_creator_addr = "0x5678"
+# minter = "0x9abc"
+# marketplace_addr = "0x4321"
+# platform_creator_addr = "0xdef0"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }

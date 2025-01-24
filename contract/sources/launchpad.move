@@ -56,7 +56,7 @@ module launchpad_addr::launchpad {
     const ENO_LISTING: u64 = 1;
     /// There exists no seller.
     const ENO_SELLER: u64 = 2;
-     const APP_OBJECT_SEED: vector<u8> = b"LAUNCHPAD";
+    const APP_OBJECT_SEED: vector<u8> = b"LAUNCHPAD";
 
 
     /// Default to mint 0 amount to creator when creating collection
@@ -675,27 +675,27 @@ module launchpad_addr::launchpad {
         purchaser: &signer,
     ): (address, address, address) {
         // marketplace::setup_test(marketplace);
-        let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
+        // let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
 
         let marketplace_addr = signer::address_of(marketplace);
-        account::create_account_for_test(marketplace_addr);
-        coin::register<aptos_coin::AptosCoin>(marketplace);
+        // account::create_account_for_test(marketplace_addr);
+        // coin::register<aptos_coin::AptosCoin>(marketplace);
 
         let seller_addr = signer::address_of(seller);
-        account::create_account_for_test(seller_addr);
-        coin::register<aptos_coin::AptosCoin>(seller);
+        // account::create_account_for_test(seller_addr);
+        // coin::register<aptos_coin::AptosCoin>(seller);
 
         let purchaser_addr = signer::address_of(purchaser);
-        account::create_account_for_test(purchaser_addr);
-        coin::register<aptos_coin::AptosCoin>(purchaser);
+        // account::create_account_for_test(purchaser_addr);
+        // coin::register<aptos_coin::AptosCoin>(purchaser);
 
-        let coins = coin::mint(10000, &mint_cap);
-        coin::deposit(seller_addr, coins);
-        let coins = coin::mint(10000, &mint_cap);
-        coin::deposit(purchaser_addr, coins);
+        // let coins = coin::mint(10000, &mint_cap);
+        // coin::deposit(seller_addr, coins);
+        // let coins = coin::mint(10000, &mint_cap);
+        // coin::deposit(purchaser_addr, coins);
 
-        coin::destroy_burn_cap(burn_cap);
-        coin::destroy_mint_cap(mint_cap);
+        // coin::destroy_burn_cap(burn_cap);
+        // coin::destroy_mint_cap(mint_cap);
 
         (marketplace_addr, seller_addr, purchaser_addr)
     }
