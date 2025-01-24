@@ -5,10 +5,10 @@ authors = []
 
 [addresses]
 launchpad_addr = "_"
-initial_creator_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
-minter = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
-platform_creator_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f" 
-marketplace_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
+initial_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
+minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
+platform_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8" 
+marketplace_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
 
 [dev-addresses]
 launchpad_addr = "0x1234"
