@@ -227,16 +227,16 @@ export function CreateCollection() {
               />
             </div>
 
-            {/* <LabeledInput
-            id="mint-limit"
-            required
-            label="Mint limit per address"
-            tooltip="How many NFTs an individual address is allowed to mint"
-            disabled={isUploading || !account}
-            onChange={(e) => {
-              setPublicMintLimitPerAccount(parseInt(e.target.value));
-            }}
-          /> */}
+            <LabeledInput
+              id="mint-limit"
+              required
+              label="Rooms Available"
+              tooltip="How many NFTs an individual address is allowed to mint"
+              disabled={isUploading || !account}
+              onChange={(e) => {
+                setPublicMintLimitPerAccount(parseInt(e.target.value));
+              }}
+            />
 
             {/* <LabeledInput
             id="royalty-percentage"

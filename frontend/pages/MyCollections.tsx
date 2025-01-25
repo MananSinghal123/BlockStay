@@ -4,7 +4,7 @@ import { GetCollectionDataResponse } from "@aptos-labs/ts-sdk";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LaunchpadHeader } from "@/components/LaunchpadHeader";
 import { Image } from "@/components/ui/image";
-// Internal hooks
+// Internal hooks  
 import { useGetCollections } from "@/hooks/useGetCollections";
 // Internal constants
 import { IS_PROD, NETWORK } from "@/constants";
@@ -64,7 +64,7 @@ export function MyCollections() {
                       <Link
                         to={"/"}
                         // target="_blank"
-                        style={{ textDecoration: "underline" }}
+                        // style={{ textDecoration: "underline" }}
                         onClick={() => handleCollectionClick(collection?.collection_id)}
                       >
                         {collection?.collection_id}
