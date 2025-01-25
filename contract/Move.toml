@@ -17,12 +17,22 @@ minter = "0x9abc"
 platform_creator_addr = "0xdef0" 
 marketplace_addr = "0x4321"
 
+<<<<<<< HEAD
 # [addresses]
 # launchpad_addr = "0x1234"
 # initial_creator_addr = "0x5678"
 # minter = "0x9abc"
 # marketplace_addr = "0x4321"
 # platform_creator_addr = "0xdef0"
+=======
+[addresses]
+launchpad_addr = "_"
+initial_creator_addr = "_"
+minter = "_"
+marketplace_addr = "_"
+platform_creator_addr = "_"
+
+>>>>>>> ayush
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }
