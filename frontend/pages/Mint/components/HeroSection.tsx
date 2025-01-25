@@ -61,7 +61,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       // collection?.cdn_asset_uris.cdn_image_uri ?? collection?.cdn_asset_uris.cdn_animation_uri ?? Placeholder1
       rounded
       className="w-[20%] md:basis-2/5 aspect-square object-cover self-center mt-[1rem]"
-      />
+      /> 
 
       <div className=" bg-red-300 flex flex-row gap-4">
           <h1 className="title-md text-white mt-[2rem] bg-slate-400">Welcome to Exchange</h1>
