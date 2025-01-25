@@ -1,6 +1,7 @@
 import { Aptos, AptosConfig, Network, Account } from "@aptos-labs/ts-sdk";
 import { Aptogotchi, AptogotchiTraits } from "./types";
 import { ABI } from "./abi";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
 
 export const APTOGOTCHI_CONTRACT_ADDRESS =
     "0x497c93ccd5d3c3e24a8226d320ecc9c69697c0dad5e1f195553d7eaa1140e91f";
@@ -24,7 +25,7 @@ export const getAptogotchi = async (
     console.log("aptogotchiObjectAddr", aptogotchiObjectAddr);
     const aptogotchi = await aptos.view({
         payload: {
-            function: `${APTOGOTCHI_CONTRACT_ADDRESS}::main::get_aptogotchi`,
+            function: `${process.env.VITE_MODULE_ADDRESS}::main::get_aptogotchi`,
             typeArguments: [],
             functionArguments: [aptogotchiObjectAddr],
         },
@@ -33,29 +34,46 @@ export const getAptogotchi = async (
     return [aptogotchi[0] as string, aptogotchi[1] as AptogotchiTraits];
 };
 
-export const mintAptogotchi = async (
-    sender: Account,
-    name: string,
-    body: number,
-    ear: number,
-    face: number
-) => {
-    const rawTxn = await aptos.transaction.build.simple({
-        sender: sender.accountAddress,
-        data: {
-            function: `${APTOGOTCHI_CONTRACT_ADDRESS}::main::create_aptogotchi`,
-            functionArguments: [name, body, ear, face],
+export const getNfts = async (
+    aptogotchiObjectAddr: string,
+    sellerAddr:string
+): Promise<[string, AptogotchiTraits]> => {
+    
+    console.log("aptogotchiObjectAddr", aptogotchiObjectAddr);
+    const nfts = await aptos.view({
+        payload: {
+            function: `${process.env.VITE_MODULE_ADDRESS}::launchpad::get_seller_listings`,
+            typeArguments: [],
+            functionArguments: [sellerAddr],
         },
     });
-    const pendingTxn = await aptos.signAndSubmitTransaction({
-        signer: sender,
-        transaction: rawTxn,
-    });
-    const response = await aptos.waitForTransaction({
-        transactionHash: pendingTxn.hash,
-    });
-    console.log("minted aptogotchi. - ", response.hash);
+    console.log(nfts);
+    return [nfts[0] as string, nfts[1] as AptogotchiTraits];
 };
+
+// export const mintAptogotchi = async (
+//     sender: Account,
+//     name: string,
+//     body: number,
+//     ear: number,
+//     face: number
+// ) => {
+//     const rawTxn = await aptos.transaction.build.simple({
+//         sender: sender.accountAddress,
+//         data: {
+//             function: `${APTOGOTCHI_CONTRACT_ADDRESS}::main::create_aptogotchi`,
+//             functionArguments: [name, body, ear, face],
+//         },
+//     });
+//     const pendingTxn = await aptos.signAndSubmitTransaction({
+//         signer: sender,
+//         transaction: rawTxn,
+//     });
+//     const response = await aptos.waitForTransaction({
+//         transactionHash: pendingTxn.hash,
+//     });
+//     console.log("minted aptogotchi. - ", response.hash);
+// };
 
 export const getAptBalance = async (addr: string) => {
     const result = await aptos.getAccountCoinAmount({

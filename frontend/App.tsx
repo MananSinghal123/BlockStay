@@ -1,11 +1,11 @@
 import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import { Mint } from "@/pages/Mint";
 import { CreateCollection } from "@/pages/CreateCollection";
 import { MyCollections } from "@/pages/MyCollections";
 // import { TopBanner } from "./components/TopBanner";
-import Portfolio from "@/pages/Portfolio";
+import Portfolio from "@/pages/Home";
 import { IS_DEV } from "./constants";
+import Home from "@/pages/Home";
 
 function Layout() {
   return (
@@ -19,8 +19,9 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      {path: "/", element:<Home/>},
       {
-        path: "/",
+        path: "/book",
         element: <Mint />,
       },
       {
