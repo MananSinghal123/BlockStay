@@ -63,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       className="w-[20%] md:basis-2/5 aspect-square object-cover self-center mt-[1rem]"
       />
 
-      <div className="basis-1/3 bg-red-300 flex flex-row gap-4">
+      <div className=" bg-red-300 flex flex-row gap-4">
           <h1 className="title-md text-white mt-[2rem] bg-slate-400">Welcome to Exchange</h1>
           {/* {collection?.collection_name ?? config.defaultCollection?.name} this was written on top*/}
           {/* <Socials /> */}
