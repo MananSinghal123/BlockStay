@@ -12,7 +12,7 @@ export const StatsSection: React.FC<StatsSectionProps> = () => {
   const { maxSupply = 0, totalMinted = 0 } = data ?? {};
 
   return (
-    <section className="stats-container bg-black px-4 max-w-screen-xl mx-auto w-full">
+    <section className="stats-container bg-transparent px-4 max-w-screen-xl mx-auto w-full">
       <ul className="flex flex-col md:flex-row gap-6">
         {[
           { title: "Available Rooms", value: maxSupply },

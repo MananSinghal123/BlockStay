@@ -26,10 +26,10 @@ export const BannerSection: React.FC<BannerSectionProps> = ({ className }) => {
 
   return (
     <div className={cn("w-full grid grid-cols-[repeat(30,minmax(136px,1fr))] grid-rows-2 gap-4 -mx-16", className)}>
-      {/* {repeatedImages.slice(0, 60).map((image, i) => {
+      {repeatedImages.slice(0, 60).map((image, i) => {
         return <Image rounded className="aspect-square" src={image} key={`${i}-${image}`} />;
         
-      })} */}
+      })}
     </div>
   
   );

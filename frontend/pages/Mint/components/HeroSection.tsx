@@ -26,7 +26,7 @@ import { Progress } from "@/components/ui/progress";
 // Internal enrty functions
 import { mintNFT } from "@/entry-functions/mint_nft";
 import image from "../../../assets/placeholders/welcome-1.png";
-
+import { Header } from "@/components/Header";
 interface HeroSectionProps {}
 
 export const HeroSection: React.FC<HeroSectionProps> = () => {
@@ -52,19 +52,22 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
   };
 
   return (
+    <>
+    
     <section
-      className="hero-container flex flex-col md:flex-row gap-6 px-4 max-w-screen-xl mx-auto w-full"
-      // style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      className="hero-container flex flex-col md:flex-row gap-6 px-4 max-w-screen-xl mx-auto w-full min-h-screen"
+      style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
-      <Image
+      <Header />
+      {/* <Image
       src={image}
       // collection?.cdn_asset_uris.cdn_image_uri ?? collection?.cdn_asset_uris.cdn_animation_uri ?? Placeholder1
       rounded
       className="w-[20%] md:basis-2/5 aspect-square object-cover self-center mt-[1rem]"
-      /> 
+      />  */}
 
-      <div className=" bg-red-300 flex flex-row gap-4">
-          <h1 className="title-md text-white mt-[2rem] bg-slate-400">Welcome to Exchange</h1>
+      <div className="  flex flex-col gap-4">
+          <h1 className="title-md text-white mt-[2rem] ">Welcome to Exchange</h1>
           {/* {collection?.collection_name ?? config.defaultCollection?.name} this was written on top*/}
           {/* <Socials /> */}
           <p className="body-sm text-white">
@@ -76,7 +79,7 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       <Card>
         <CardContent
         fullPadding
-        className="flex flex-col md:flex-row gap-4 md:justify-between items-start md:items-center bg-[#a0522d] flex-wrap"
+        className="flex flex-col md:flex-row gap-4 md:justify-between items-start md:items-center bg-transparent flex-wrap"
         >
         <form onSubmit={mintNft} className="flex flex-col md:flex-row gap-4 w-full md:basis-1/4">
           <Input
@@ -136,8 +139,10 @@ export const HeroSection: React.FC<HeroSectionProps> = () => {
       </div>
       </div>
     </section>
+    </>
   );
 };
+
 
 const AddressButton: FC<{ address: string }> = ({ address }) => {
   const [copied, setCopied] = useState(false);

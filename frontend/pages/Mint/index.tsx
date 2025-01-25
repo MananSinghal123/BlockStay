@@ -10,6 +10,8 @@ import { HowToMintSection } from "@/pages/Mint/components/HowToMintSection";
 import { OurTeamSection } from "@/pages/Mint/components/OurTeamSection";
 import { FAQSection } from "@/pages/Mint/components/FAQSection";
 import { Socials } from "@/pages/Mint/components/Socials";
+// import image from "../../../../assets/placeholders/welcome-1.png";
+import image from "../../assets/placeholders/welcome-1.png"
 // import { ConnectWalletAlert } from "@/pages/Mint/components/ConnectWalletAlert";
 
 import { useGetCollectionData } from "@/hooks/useGetCollectionData";
@@ -36,10 +38,11 @@ export function Mint() {
 
   return (
     <>
-      <Header />
-      <div style={{ overflow: "hidden" }} className="overflow-hidden bg-black">
-        <main className="flex flex-col gap-10 md:gap-16 mt-6">
+      
+      <div style={{ overflow: "hidden" }} className="overflow-hidden">
+        <main className="flex flex-col gap-10 md:gap-16 mt-0">
           {/* <ConnectWalletAlert /> */}
+          {/* <Header /> */}
           <HeroSection />
           <StatsSection />
           <OurStorySection />
