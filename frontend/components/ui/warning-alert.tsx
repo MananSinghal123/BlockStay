@@ -8,7 +8,7 @@ export const WarningAlert: FC<{
 }> = ({ title, children }) => {
   return (
     <Alert variant="warning">
-      <AlertOctagon className="w-4 h-5" />
+      <AlertOctagon className="w-4 bg-red-500/10 border-red-500/30 h-5" />
       <AlertTitle className="body-md-semibold">{title}</AlertTitle>
       <AlertDescription className="body-sm">{children}</AlertDescription>
     </Alert>

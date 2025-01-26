@@ -39,23 +39,25 @@ export function Mint() {
   return (
     <>
       
-      <div style={{ overflow: "hidden" }} className="overflow-hidden">
-        <main className="flex flex-col gap-10 md:gap-16 mt-0">
+      <div style={{ overflow: "hidden" }} className=" overflow-hidden">
+        <main className="flex bg-black/95 flex-col  mt-0">
           {/* <ConnectWalletAlert /> */}
           {/* <Header /> */}
           <HeroSection />
-          <StatsSection />
-          <OurStorySection />
-          <HowToMintSection />
-          <BannerSection />
-          <OurTeamSection />
+          {/* <StatsSection /> */}
+          {/* <OurStorySection /> */}
+          {/* <HowToMintSection /> */}
+          {/* <BannerSection /> */}
+          {/* <OurTeamSection /> */}
           <FAQSection />
         </main>
 
-        <footer className="footer-container px-4 pb-6 w-full max-w-screen-xl mx-auto mt-6 md:mt-16 flex items-center justify-between">
-          <p>{data?.collection.collection_name}</p>
+        <footer className="bg-[#151f53] px-4 py-6 w-full">
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+          <p className="text-blue-100 text-sm">{data?.collection.collection_name}</p>
           <Socials />
-        </footer>
+        </div>
+      </footer>
       </div>
     </>
   );

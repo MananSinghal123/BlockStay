@@ -52,7 +52,7 @@ export const NftCard = ({ nft, children }: Props) => {
     //                 </div>
     //             </div>
     //             <Link
-    //                 to={`https://explorer.aptoslabs.com/object/${nft.address}?network=testnet`}
+    //                 to={https://explorer.aptoslabs.com/object/${nft.address}?network=testnet}
     //                 rel="noopener noreferrer"
     //                 target="_blank"
     //             >
@@ -75,7 +75,7 @@ export const NftCard = ({ nft, children }: Props) => {
           </Text>
         </Box>
         {/* <Link
-          to={`https://explorer.aptoslabs.com/object/${nft.address}?network=testnet`}
+          to={https://explorer.aptoslabs.com/object/${nft.address}?network=testnet}
           rel="noopener noreferrer"
           target="_blank"
         >

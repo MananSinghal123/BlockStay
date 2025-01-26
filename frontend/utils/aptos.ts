@@ -1,7 +1,11 @@
 import { Aptos, AptosConfig, Network, Account } from "@aptos-labs/ts-sdk";
 import { AptogotchiTraits, NFT } from "./types";
+import { AptogotchiTraits, NFT } from "./types";
 import { ABI } from "./abi";
 
+export const APTOGOTCHI_CONTRACT_ADDRESS = "0x497c93ccd5d3c3e24a8226d320ecc9c69697c0dad5e1f195553d7eaa1140e91f";
+export const COLLECTION_ID = "0xfce62045f3ac19160c1e88662682ccb6ef1173eba82638b8bae172cc83d8e8b8";
+export const COLLECTION_CREATOR_ADDRESS = "0x714319fa1946db285254e3c7c75a9aac05277200e59429dd1f80f25272910d9c";
 export const APTOGOTCHI_CONTRACT_ADDRESS = "0x497c93ccd5d3c3e24a8226d320ecc9c69697c0dad5e1f195553d7eaa1140e91f";
 export const COLLECTION_ID = "0xfce62045f3ac19160c1e88662682ccb6ef1173eba82638b8bae172cc83d8e8b8";
 export const COLLECTION_CREATOR_ADDRESS = "0x714319fa1946db285254e3c7c75a9aac05277200e59429dd1f80f25272910d9c";
@@ -11,6 +15,7 @@ export const APT = "0x1::aptos_coin::AptosCoin";
 export const APT_UNIT = 100_000_000;
 
 const config = new AptosConfig({
+  network: Network.TESTNET,
   network: Network.TESTNET,
 });
 export const aptos = new Aptos(config);
@@ -69,12 +74,27 @@ export const getAptBalance = async (addr: string) => {
     accountAddress: addr,
     coinType: APT,
   });
+  const result = await aptos.getAccountCoinAmount({
+    accountAddress: addr,
+    coinType: APT,
+  });
 
+  console.log("APT balance", result);
+  return result;
   console.log("APT balance", result);
   return result;
 };
 
 export const getCollection = async () => {
+  // const collection = await aptos.getCollectionDataByCollectionId({
+  //   collectionId: COLLECTION_ID,
+  // });
+  const collection = await aptos.getCollectionData({
+    collectionName: COLLECTION_NAME,
+    creatorAddress: COLLECTION_CREATOR_ADDRESS,
+  });
+  console.log("collection", collection);
+  return collection;
   // const collection = await aptos.getCollectionDataByCollectionId({
   //   collectionId: COLLECTION_ID,
   // });
@@ -100,7 +120,23 @@ export const getUserOwnedNfts = async (ownerAddr: string) => {
   const result = await aptos.getAccountOwnedTokens({
     accountAddress: ownerAddr,
   });
+// export const getUserOwnedAptogotchis = async (ownerAddr: string) => {
+//   const result = await aptos.getAccountOwnedTokensFromCollectionAddress({
+//     accountAddress: ownerAddr,
+//     collectionAddress: COLLECTION_ID,
+//   });
 
+//   console.log("my aptogotchis", result);
+//   return result;
+// };
+
+export const getUserOwnedNfts = async (ownerAddr: string) => {
+  const result = await aptos.getAccountOwnedTokens({
+    accountAddress: ownerAddr,
+  });
+
+  console.log("my nfts", result);
+  return result;
   console.log("my nfts", result);
   return result;
 };
@@ -123,7 +159,27 @@ export const getUserOwnedNfts = async (ownerAddr: string) => {
 //       variables: { collectionId: COLLECTION_ID },
 //     },
 //   });
+// export const getAllAptogotchis = async () => {
+//   const result: {
+//     current_token_datas_v2: Aptogotchi[];
+//   } = await aptos.queryIndexer({
+//     query: {
+//       query: `
+//         query MyQuery($collectionId: String) {
+//           current_token_datas_v2(
+//             where: {collection_id: {_eq: $collectionId}}
+//           ) {
+//             name: token_name
+//             address: token_data_id
+//           }
+//         }
+//       `,
+//       variables: { collectionId: COLLECTION_ID },
+//     },
+//   });
 
+//   return result.current_token_datas_v2;
+// };
 //   return result.current_token_datas_v2;
 // };
 
@@ -177,9 +233,29 @@ export const getAllListingObjectAddresses = async (sellerAddr: string) => {
   //   console.log("VITEMODADDRESS", process.env.VITE_MODULE_ADDRESS);
   console.log("all listings", allListings);
   return allListings[0];
+  //   console.log(import.meta.env.VITE_MODULE_ADDRESS);
+  const allListings: [string[]] = await aptos.view({
+    payload: {
+      function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::listing`,
+      typeArguments: [],
+      functionArguments: [sellerAddr],
+    },
+  });
+  //   console.log("VITEMODADDRESS", process.env.VITE_MODULE_ADDRESS);
+  console.log("all listings", allListings);
+  return allListings[0];
 };
 
 export const getAllSellers = async () => {
+  const allSellers: [string[]] = await aptos.view({
+    payload: {
+      function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::get_sellers`,
+      typeArguments: [],
+      functionArguments: [],
+    },
+  });
+  console.log("all sellers", allSellers);
+  return allSellers[0];
   const allSellers: [string[]] = await aptos.view({
     payload: {
       function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::get_sellers`,
@@ -205,8 +281,33 @@ export const getListingObjectAndSeller = async (listingObjectAddr: string): Prom
     listingObjectAndSeller[0]["inner"] as string,
     listingObjectAndSeller[1] as string,
   ];
+export const getListingObjectAndSeller = async (listingObjectAddr: string): Promise<[string, string]> => {
+  const listingObjectAndSeller = await aptos.view({
+    payload: {
+      function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::listing`,
+      typeArguments: [],
+      functionArguments: [listingObjectAddr],
+    },
+  });
+  console.log("listing object and seller", listingObjectAndSeller);
+  return [
+    // @ts-ignore
+    listingObjectAndSeller[0]["inner"] as string,
+    listingObjectAndSeller[1] as string,
+  ];
 };
 
+export const getListingObjectPrice = async (listingObjectAddr: string): Promise<number> => {
+  const listingObjectPrice = await aptos.view({
+    payload: {
+      function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::price`,
+      typeArguments: [APT],
+      functionArguments: [listingObjectAddr],
+    },
+  });
+  console.log("listing object price", JSON.stringify(listingObjectPrice));
+  // @ts-ignore
+  return (listingObjectPrice[0]["vec"] as number) / APT_UNIT;
 export const getListingObjectPrice = async (listingObjectAddr: string): Promise<number> => {
   const listingObjectPrice = await aptos.view({
     payload: {

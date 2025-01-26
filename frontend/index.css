@@ -75,3 +75,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Move scrollbar styles outside Tailwind @layer */
+.element {
+  /* Add overflow to enable scrolling if needed */
+  overflow: auto; /* or scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.element::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
+}
