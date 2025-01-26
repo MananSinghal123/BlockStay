@@ -21,8 +21,11 @@ export function MyCollections() {
     setCollectionAddress(collectionId)
   }
 
+  // Reverse the collections array to display the latest on top
+  const reversedCollections = [...collections].reverse()
+
   // Function to chunk the collections array into groups of 4
-  const chunkedCollections = collections.reduce((resultArray: any[][], item, index) => {
+  const chunkedCollections = reversedCollections.reduce((resultArray: any[][], item, index) => {
     const chunkIndex = Math.floor(index / 4)
     if (!resultArray[chunkIndex]) {
       resultArray[chunkIndex] = [] // Create a new chunk
@@ -80,7 +83,6 @@ export function MyCollections() {
                           <h3 className="font-medium text-lg transition-colors duration-300 ease-in-out group-hover:text-blue-600">
                             {collection?.collection_name}
                           </h3>
-                        
                         </div>
                         <div className="flex items-center gap-1">
                           <span className="text-sm transition-colors duration-300 ease-in-out group-hover:text-yellow-500">

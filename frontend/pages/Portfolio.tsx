@@ -1,50 +1,59 @@
-"use client";
+import { List } from "@/components/List";
+import { useGetListedNftsBySeller } from "@/hooks/useGetListedNftsBySeller";
+import { useGetNftsByOwner } from "@/hooks/useGetNftsByOwner";
+import { Box, Button, Divider, HStack, SimpleGrid, Text } from "@chakra-ui/react";
+import { NftCard } from "./NftCard";
+import { useGetAllListedNfts } from "@/hooks/useGetAllListedNfts";
 
-import { Network, NetworkToChainId } from "@aptos-labs/ts-sdk";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { Box, Heading } from "@chakra-ui/react";
-import { Portfolio } from "@/components/Portfolio";
-import { LaunchpadHeader } from "@/components/LaunchpadHeader";
-import {
-  Alert,
-  AlertTitle,
-} from "@/components/ui/alert"
+type Props = {
+  address: string;
+};
 
-export default function Page() {
-    return (
-        <>
-        <LaunchpadHeader title="Portfolio NFTs" />
-        <Box>
-            <Heading margin={4} textAlign="center">
-                My Portfolio
-            </Heading>
-            <PageContent />
-        </Box>
-        </>
-        
-    );
-}
+export const Portfolio = ({ address }: Props) => {
+  const nftsInWallet = useGetNftsByOwner(address);
+  const nftsListed = useGetAllListedNfts();
+  console.log("Listed", nftsListed);
+  //   const goToMint = () => {
+  //     window.location.href = "/mint";
+  //   };
 
-function PageContent() {
-    const { connected, network, account } = useWallet();
-
-    if (!connected) {
-        return (
-            <Alert>
-                <AlertTitle />
-                Connect wallet to see your portfolio.
-            </Alert>
-        );
-    }
-
-    if (network?.chainId != NetworkToChainId[Network.TESTNET].toString()) {
-        return (
-            <Alert>
-                <AlertTitle />
-                Please Connect to Testnet.
-            </Alert>
-        );
-    }
-
-    return account && <Portfolio address={account.address} />;
-}
+  return (
+    <Box>
+      <HStack marginTop={4} marginBottom={12} justifyContent="center" flexDirection="column">
+        <Text fontSize="xl" fontWeight="bold" textAlign="center" marginY={4}>
+          My NFTs
+        </Text>
+        {nftsInWallet && nftsInWallet.length > 0 ? (
+          <SimpleGrid spacing={10} columns={3}>
+            {nftsInWallet.map((nft) => {
+              return (
+                <NftCard nft={nft} key={nft.address}>
+                  <List nftTokenObjectAddr={nft.address} />
+                </NftCard>
+              );
+            })}
+          </SimpleGrid>
+        ) : (
+          <h1>Nothing to display</h1>
+          //   <Button onClick={goToMint}>Mint a Aptogotchi NFT</Button>
+        )}
+      </HStack>
+      <Divider />
+      <HStack marginY={12} justifyContent="center" flexDirection="column">
+        <Text fontSize="xl" fontWeight="bold" textAlign="center" marginY={4}>
+          My Listed NFTs
+        </Text>
+        {nftsListed &&
+          (nftsListed.length > 0 ? (
+            <SimpleGrid spacing={10} columns={3}>
+              {nftsListed.map((nft) => {
+                return <NftCard key={nft.address} nft={nft} />;
+              })}
+            </SimpleGrid>
+          ) : (
+            <Text size="md">No NFT listed</Text>
+          ))}
+      </HStack>
+    </Box>
+  );
+};
