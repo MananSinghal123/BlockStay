@@ -4,19 +4,12 @@ version = "1.0.0"
 authors = []
 
 [addresses]
-launchpad_addr = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
-initial_creator_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8"
-minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
-# minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
-platform_creator_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8" 
-marketplace_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8"
+launchpad_addr = "_"
+platform_creator_addr = "0x0214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f" 
 
 [dev-addresses]
 launchpad_addr = "0x1234"
-initial_creator_addr = "0x5678"
-minter = "0x9abc"
 platform_creator_addr = "0xdef0" 
-marketplace_addr = "0x4321"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }
