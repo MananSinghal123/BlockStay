@@ -152,8 +152,7 @@ fun test_happy_path(
     let (burn_cap, mint_cap) = aptos_coin::initialize_for_test(aptos_framework);
     
     // 2. Create and set up accounts
-    let user1_addr = signer::address_of(user1);
-    let user2_addr = signer::address_of(user2);
+    
     account::create_account_for_test(user1_addr);
     account::create_account_for_test(user2_addr);
     coin::register<AptosCoin>(user1);

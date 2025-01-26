@@ -26,7 +26,6 @@ export const LaunchpadHeader: FC<LaunchpadHeaderProps> = ({ title }) => {
         <Link className={buttonVariants({ variant: "link", className: "text-white" })} to={"/portfolio"}>
           Listings
         </Link>
-
         <WalletSelector />
       </div>
     </div>

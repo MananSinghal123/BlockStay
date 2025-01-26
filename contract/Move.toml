@@ -4,11 +4,12 @@ version = "1.0.0"
 authors = []
 
 [addresses]
-launchpad_addr = "_"
-initial_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
+launchpad_addr = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
+initial_creator_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8"
 minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
-platform_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8" 
-marketplace_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
+# minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
+platform_creator_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8" 
+marketplace_addr = "0x0344152d2aa9b92f1b2cf7aef0eb9f548951ddf9f9a98dad008e2b7179d4aaa8"
 
 [dev-addresses]
 launchpad_addr = "0x1234"
@@ -16,23 +17,6 @@ initial_creator_addr = "0x5678"
 minter = "0x9abc"
 platform_creator_addr = "0xdef0" 
 marketplace_addr = "0x4321"
-
-<<<<<<< HEAD
-# [addresses]
-# launchpad_addr = "0x1234"
-# initial_creator_addr = "0x5678"
-# minter = "0x9abc"
-# marketplace_addr = "0x4321"
-# platform_creator_addr = "0xdef0"
-=======
-[addresses]
-launchpad_addr = "_"
-initial_creator_addr = "_"
-minter = "_"
-marketplace_addr = "_"
-platform_creator_addr = "_"
-
->>>>>>> ayush
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework" }

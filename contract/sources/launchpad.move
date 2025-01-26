@@ -89,7 +89,6 @@ module launchpad_addr::launchpad {
         delete_ref: object::DeleteRef,                // Used for clean-up
         extend_ref: object::ExtendRef,                // Used to extend reference for transfer
         // expiration_time: u64,                         // Expiration time for the listing (NFT)
-
     }
 
    // Fixed price listing, now includes expiration time
@@ -521,6 +520,23 @@ module launchpad_addr::launchpad {
 
     // ================================= View  ================================= //
 
+     #[view]
+    public fun price<CoinType>(
+        object: object::Object<Listing>,
+    ): option::Option<u64> acquires FixedPriceListing {
+        let listing_addr = object::object_address(&object);
+        if (exists<FixedPriceListing<CoinType>>(listing_addr)) {
+            let fixed_price = borrow_global<FixedPriceListing<CoinType>>(listing_addr);
+            option::some(fixed_price.price)
+        } else {
+            // This should just be an abort but the compiler errors.
+            assert!(false, error::not_found(ENO_LISTING));
+            option::none()
+        }
+    }
+
+
+    #[view]
    public fun listing(object: object::Object<Listing>): (object::Object<object::ObjectCore>, address) acquires Listing {
         let listing = borrow_listing(object);
         (listing.object, listing.seller)

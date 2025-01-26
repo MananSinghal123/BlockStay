@@ -6,6 +6,7 @@ import { MyCollections } from "@/pages/MyCollections";
 // import { TopBanner } from "./components/TopBanner";
 import Portfolio from "@/pages/Portfolio";
 import { IS_DEV } from "./constants";
+import { CreateListing } from "./pages/CreateListing";
 
 function Layout() {
   return (
@@ -28,13 +29,17 @@ const router = createBrowserRouter([
         element: <CreateCollection />,
       },
       {
+        path: "create-listing",
+        element: <CreateListing />,
+      },
+      {
         path: "my-collections",
         element: <MyCollections />,
       },
       {
-        path: 'portfolio',
-        element: <Portfolio />
-      }
+        path: "portfolio",
+        element: <Portfolio />,
+      },
     ],
   },
 ]);

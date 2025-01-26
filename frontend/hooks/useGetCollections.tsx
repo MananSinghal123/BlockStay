@@ -38,7 +38,6 @@ const getObjects = async (registry: [{ inner: string }]) => {
       const object = await aptosClient().getObjectDataByObjectAddress({
         objectAddress: formattedRegistry,
       });
-
       return object.owner_address;
     }),
   );
