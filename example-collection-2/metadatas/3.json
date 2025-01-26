@@ -1,0 +1,11 @@
+{
+    "description": "golden-room",
+    "image": "to_fill_after_upload",
+    "name": "A1 2",
+    "external_url": "https://your_project_url.io/3",
+    "attributes": [
+      {
+        "trait_type": "golden_level",
+        "value":"3"
+}]
+}
