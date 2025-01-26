@@ -4,11 +4,11 @@ version = "1.0.0"
 authors = []
 
 [addresses]
-launchpad_addr = "0x523e696340ac6f88ef5b8bb4c80ba87f4d8a2cad3b5c0a77bc368490b59574ea"
-initial_creator_addr = "0x523e696340ac6f88ef5b8bb4c80ba87f4d8a2cad3b5c0a77bc368490b59574ea"
+launchpad_addr = "_"
+initial_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
 minter = "0x3c41ff6b5845e0094e19888cba63773591be9de59cafa9e582386f6af15dd490"
-platform_creator_addr = "0x523e696340ac6f88ef5b8bb4c80ba87f4d8a2cad3b5c0a77bc368490b59574ea" 
-marketplace_addr = "0x523e696340ac6f88ef5b8bb4c80ba87f4d8a2cad3b5c0a77bc368490b59574ea"
+platform_creator_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8" 
+marketplace_addr = "0x9bdcec04cd0aa9f0fcf3bef12a09a62011cd66ba27cf778a2e4479fa92589a8"
 
 [dev-addresses]
 launchpad_addr = "0x1234"
