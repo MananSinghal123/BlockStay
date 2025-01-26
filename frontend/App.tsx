@@ -29,10 +29,6 @@ const router = createBrowserRouter([
         element: <CreateCollection />,
       },
       {
-        path: "create-listing",
-        element: <CreateListing />,
-      },
-      {
         path: "my-collections",
         element: <MyCollections />,
       },

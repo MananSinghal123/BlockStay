@@ -1,10 +1,10 @@
-import { config } from "@/config"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
+import { config } from "@/config";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
-type FAQSectionProps = {}
+type FAQSectionProps = {};
 
 // Update this in your config file
 const projectFAQs = [
@@ -31,29 +31,29 @@ const projectFAQs = [
   {
     title: "What cryptocurrencies can I use for booking?",
     description:
-      "Currently, we support Ethereum (ETH) for bookings. We're working on expanding to other cryptocurrencies in the future.",
+      "Currently, we support Aptos (APT) for bookings. We're working on expanding to other cryptocurrencies in the future.",
   },
   {
     title: "Do I need a specific wallet to use Hotel Coin Exchange?",
     description:
-      "You'll need an Ethereum-compatible wallet like MetaMask, Trust Wallet, or Coinbase Wallet to interact with our platform and store your booking NFTs.",
+      "You'll need an Aptos-compatible wallet like Petra etc. wallet to interact with our platform and store your booking NFTs.",
   },
-]
+];
 
 config.faqs = {
   title: "Frequently Asked Questions",
   questions: projectFAQs,
-}
+};
 
 export const FAQSection: React.FC<FAQSectionProps> = () => {
-  const [openItems, setOpenItems] = useState<string[]>([])
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [openItems, setOpenItems] = useState<string[]>([]);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  if (!config.faqs || !config.faqs.questions.length) return null
+  if (!config.faqs || !config.faqs.questions.length) return null;
 
   const toggleItem = (value: string) => {
-    setOpenItems((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
-  }
+    setOpenItems((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
+  };
 
   return (
     <motion.section
@@ -129,6 +129,5 @@ export const FAQSection: React.FC<FAQSectionProps> = () => {
         </Accordion>
       </div>
     </motion.section>
-  )
-}
-
+  );
+};

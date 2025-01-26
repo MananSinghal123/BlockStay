@@ -1,52 +1,52 @@
-import { type FC, type FormEvent, useState, useEffect } from "react"
-import { useWallet } from "@aptos-labs/wallet-adapter-react"
-import { useQueryClient } from "@tanstack/react-query"
-import { motion, AnimatePresence } from "framer-motion"
-import Copy from "@/assets/icons/copy.svg"
-import { truncateAddress } from "@/utils/truncateAddress"
-import { clampNumber } from "@/utils/clampNumber"
-import { aptosClient } from "@/utils/aptosClient"
-import { useGetCollectionData } from "@/hooks/useGetCollectionData"
-import { Image } from "@/components/ui/image"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { mintNFT } from "@/entry-functions/mint_nft"
-import { Header } from "@/components/Header"
-import { OurStorySection } from "./OurStorySection"
-import { HowToMintSection } from "./HowToMintSection"
+import { type FC, type FormEvent, useState, useEffect } from "react";
+import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
+import Copy from "@/assets/icons/copy.svg";
+import { truncateAddress } from "@/utils/truncateAddress";
+import { clampNumber } from "@/utils/clampNumber";
+import { aptosClient } from "@/utils/aptosClient";
+import { useGetCollectionData } from "@/hooks/useGetCollectionData";
+import { Image } from "@/components/ui/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { mintNFT } from "@/entry-functions/mint_nft";
+import { Header } from "@/components/Header";
+import { OurStorySection } from "./OurStorySection";
+import { HowToMintSection } from "./HowToMintSection";
 
 export const HeroSection: React.FC = () => {
-  const { data } = useGetCollectionData()
-  const queryClient = useQueryClient()
-  const { account, signAndSubmitTransaction } = useWallet()
-  const [nftCount, setNftCount] = useState(1)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const { data } = useGetCollectionData();
+  const queryClient = useQueryClient();
+  const { account, signAndSubmitTransaction } = useWallet();
+  const [nftCount, setNftCount] = useState(1);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const { userMintBalance = 0, collection, totalMinted = 0, maxSupply = 1 } = data ?? {}
-  const mintUpTo = Math.min(userMintBalance, maxSupply - totalMinted)
+  const { userMintBalance = 0, collection, totalMinted = 0, maxSupply = 1 } = data ?? {};
+  const mintUpTo = Math.min(userMintBalance, maxSupply - totalMinted);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const mintNft = async (e: FormEvent) => {
-    e.preventDefault()
-    if (!account || !data?.isMintActive) return
-    if (!collection?.collection_id) return
+    e.preventDefault();
+    if (!account || !data?.isMintActive) return;
+    if (!collection?.collection_id) return;
 
     const response = await signAndSubmitTransaction(
       mintNFT({ collectionId: collection.collection_id, amount: nftCount }),
-    )
-    await aptosClient().waitForTransaction({ transactionHash: response.hash })
-    queryClient.invalidateQueries()
-    setNftCount(1)
-  }
+    );
+    await aptosClient().waitForTransaction({ transactionHash: response.hash });
+    queryClient.invalidateQueries();
+    setNftCount(1);
+  };
 
   return (
     <>
@@ -80,7 +80,7 @@ export const HeroSection: React.FC = () => {
               className="text-center mb-12"
             >
               <h1 className="text-7xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent leading-tight">
-                Transform Your Travel Experience
+                Transform Your Hotel Booking Experience
               </h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -172,17 +172,17 @@ export const HeroSection: React.FC = () => {
         <HowToMintSection />
       </section>
     </>
-  )
-}
+  );
+};
 
 const AddressButton: FC<{ address: string }> = ({ address }) => {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   async function onCopy() {
-    if (copied) return
-    await navigator.clipboard.writeText(address)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 3000)
+    if (copied) return;
+    await navigator.clipboard.writeText(address);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   }
 
   return (
@@ -218,6 +218,5 @@ const AddressButton: FC<{ address: string }> = ({ address }) => {
         )}
       </AnimatePresence>
     </motion.button>
-  )
-}
-
+  );
+};
