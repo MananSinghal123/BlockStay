@@ -35,7 +35,7 @@ export function MyCollections() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-[#070B1E]">
       <LaunchpadHeader title="My Hotels" />
       <div className="max-w-screen-xl w-[63rem] mx-auto px-4 py-8">
         {!collections.length ? (
@@ -64,7 +64,7 @@ export function MyCollections() {
                       </button>
                       {/* Image Carousel Dots */}
                       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-                        {[...Array(5)].map((_, i) => (
+                        {[...Array(0)].map((_, i) => (
                           <div
                             key={i}
                             className={cn(

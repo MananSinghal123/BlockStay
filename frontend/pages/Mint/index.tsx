@@ -49,7 +49,7 @@ export function Mint() {
           {/* <HowToMintSection /> */}
           {/* <BannerSection /> */}
           {/* <OurTeamSection /> */}
-          <FAQSection />
+          {/* <FAQSection /> */}
         </main>
 
         <footer className="bg-[#151f53] px-4 py-6 w-full">

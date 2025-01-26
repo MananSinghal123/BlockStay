@@ -24,6 +24,7 @@ export const LaunchpadHeader: FC<LaunchpadHeaderProps> = ({ title }) => {
   }, []);
 
   const navItems = [
+    {title: "Home", path: "/"},
     { title: "Book Page", path: "/book" },
     { title: "All Hotels", path: "/my-collections" },
     { title: "List Hotel", path: "/create-collection" },
@@ -59,7 +60,7 @@ export const LaunchpadHeader: FC<LaunchpadHeaderProps> = ({ title }) => {
           transition={{ delay: 0.2 }}
         >
           <motion.div
-            className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg px-6 py-2"
+            className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg mr-[10rem] px-6 py-2"
             whileHover={{ y: 2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >

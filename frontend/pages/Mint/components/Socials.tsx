@@ -17,7 +17,7 @@ export const Socials: FC = () => {
 
   return (
     <motion.ul
-      className="flex gap-4"
+      className="flex gap-[2rem] mr-[2rem]"
       initial="hidden"
       animate="visible"
       variants={{

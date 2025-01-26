@@ -98,7 +98,7 @@ export const HeroSection: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Card className="bg-white/[0.03] backdrop-blur-xl border-white/10 shadow-2xl shadow-blue-500/10">
+              <Card className="bg-gradient-to-b from-blue-600/10 via-blue-900/10 to-transparen">
                 <CardContent className="p-8">
                   <form onSubmit={mintNft} className="space-y-8">
                     <div className="max-w-sm mx-auto space-y-6">
@@ -169,7 +169,7 @@ export const HeroSection: React.FC = () => {
         </div>
 
         {/* <OurStorySection /> */}
-        <HowToMintSection />
+        {/* <HowToMintSection /> */}
       </section>
     </>
   );

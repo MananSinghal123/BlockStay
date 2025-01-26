@@ -23,6 +23,7 @@ export function Header() {
   }, [])
 
   const navItems = [
+    {title: "Home", path: "/"},
     { title: "Book Page", path: "/book" },
     { title: "All Hotels", path: "/my-collections" },
     { title: "List Hotel", path: "/create-collection" },

@@ -31,6 +31,8 @@ export const useGetNftsByOwner = (ownerAddr: string) => {
         nfts.push({
           name: nft.current_token_data?.current_collection?.collection_name,
           address: nft.token_data_id,
+          img:(nft.current_token_data?.current_collection?.uri)
+
         });
       }
       setNfts(nfts);

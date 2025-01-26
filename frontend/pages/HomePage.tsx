@@ -9,19 +9,22 @@ import {
   Alert,
   AlertTitle,
 } from "@/components/ui/alert"
-
+import { OurStorySection } from "./Mint/components/OurStorySection";
+import { OurTeamSection } from "./Mint/components/OurTeamSection";
+import { FAQSection } from "./Mint/components/FAQSection";
+import { HowToMintSection } from "./Mint/components/HowToMintSection";
 export default function Page() {
     return (
         <>
-        <LaunchpadHeader title="Home" />
-        <Box>
-            <Heading margin={4} textAlign="center">
-               Home Page
-            </Heading>
-            <PageContent />
-        </Box>
+        <div className="bg-[#070B1E]">
+            
+        <LaunchpadHeader title="Hotel Coin Exchange" />
+        <OurStorySection/>
+        <HowToMintSection/>
+        <FAQSection />
+        <OurTeamSection/>
+        </div>
         </>
-        
     );
 }
 

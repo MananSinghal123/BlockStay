@@ -119,15 +119,15 @@ export function CreateCollection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-[#070B1E] text-white">
       <div className="container mx-auto px-2 py-2">
-        <LaunchpadHeader title="Create New Collection" />
+        <LaunchpadHeader title="List Hotel" />
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-2xl mt-5 mx-auto bg-gray-800/50 backdrop-blur-md rounded-2xl shadow-2xl p-6 border border-gray-700"
+          className="max-w-2xl mt-5 mx-auto bg-[#070B1E] backdrop-blur-md rounded-2xl shadow-2xl p-6 border border-gray-700"
         >
           {/* Warning Alerts */}
           {(!account || account.address !== CREATOR_ADDRESS) && (
@@ -155,7 +155,7 @@ export function CreateCollection() {
           <UploadSpinner on={isUploading} />
 
           {/* File Upload Section */}
-          <Card className="bg-gray-800/50 border-gray-700 mb-6">
+          <Card className="bg-[#070B1E] border-gray-700 mb-6">
             <CardHeader className="pb-2">
               <div className="text-sm text-gray-400">Upload Collection Files</div>
             </CardHeader>
@@ -197,7 +197,7 @@ export function CreateCollection() {
           </Card>
 
           {/* Remaining form fields - preserved exactly */}
-          <div className="space-y-4 text-black">
+          <div className="space-y-4 text-white">
             <div className="flex space-x-4">
               <DateTimeInput
                 id="mint-start"
@@ -207,7 +207,7 @@ export function CreateCollection() {
                 onDateChange={setPublicMintStartDate}
                 time={publicMintStartTime}
                 onTimeChange={onPublicMintStartTime}
-                className="w-1/2"
+                className="w-1/2 text-white"
                 tooltip="the start of your stay"
               />
               <DateTimeInput
@@ -218,7 +218,7 @@ export function CreateCollection() {
                 onDateChange={setPublicMintEndDate}
                 time={publicMintEndTime}
                 onTimeChange={onPublicMintEndTime}
-                className="w-1/2"
+                className="w-1/2 text-white"
                 tooltip="the end of your stay"
               />
             </div>
@@ -229,6 +229,7 @@ export function CreateCollection() {
               disabled={isUploading || !account}
               onChange={(e) => setPublicMintLimitPerAccount(parseInt(e.target.value))}
               tooltip="the limit of rooms available"
+              
             />
 
             <LabeledInput

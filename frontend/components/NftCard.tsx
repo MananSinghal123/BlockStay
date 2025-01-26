@@ -68,11 +68,14 @@ export const NftCard = ({ nft, children }: Props) => {
     <Card>
       <HStack spacing={2} flexDirection="column" marginY={6} marginX={4} width={240}>
         {/* {aptogotchiImage} */}
-        <Box display="flex" gap={2}>
-          <Text fontSize="xl">Name: </Text>
-          <Text fontSize="xl" fontWeight="bold">
+        <Box display="flex" gap={2} className="w-[25rem] pl-[3rem] ml-[10.5rem]">
+          <Text fontSize="xl" className="ml-[6rem]" textColor={"white"}>Hotel: </Text>
+          <Text fontSize="xl" textColor={"white"} fontWeight="bold">
             {nft.name}
           </Text>
+          <Box>
+            <img src={nft.image} alt="" />
+          </Box>
         </Box>
         {/* <Link
           to={https://explorer.aptoslabs.com/object/${nft.address}?network=testnet}
@@ -83,7 +86,7 @@ export const NftCard = ({ nft, children }: Props) => {
             View NFT on Explorer
           </Text>
         </Link> */}
-        <Box marginTop={6}>{children}</Box>
+        <Box marginTop={6} className="ml-[9rem]" >{children}</Box>
       </HStack>
     </Card>
   );
