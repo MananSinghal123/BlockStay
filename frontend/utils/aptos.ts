@@ -30,10 +30,11 @@ export const aptos = new Aptos(config);
 
 export const getNft = async (NftObjectAddr: string) => {
   //   console.log("aptogotchiObjectAddr", aptogotchiObjectAddr);
-  const nft = await aptos.getAccountResource({
+  const nft = await aptos.account.getAccountResources({
     accountAddress: NftObjectAddr,
-    resourceType: "0x1::Token::Token",
   });
+  // console.log("NFT RESOURCE", nft);
+  // console.log("getNft", nft);
   //   const aptogotchi = await aptos.view({
   //     payload: {
   //       function: ${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::get_nft,
@@ -43,7 +44,7 @@ export const getNft = async (NftObjectAddr: string) => {
   //   });
   //   console.log(nft);
   //   return [aptogotchi[0] as string, aptogotchi[1] as AptogotchiTraits];
-  return nft;
+  return nft[2];
 };
 
 // export const mintAptogotchi = async (sender: Account, name: string, body: number, ear: number, face: number) => {
@@ -169,7 +170,7 @@ export const getAllListingObjectAddresses = async (sellerAddr: string) => {
   //   console.log(import.meta.env.VITE_MODULE_ADDRESS);
   const allListings: [string[]] = await aptos.view({
     payload: {
-      function: ` ${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::listing`,
+      function: `${import.meta.env.VITE_MODULE_ADDRESS}::launchpad::get_seller_listings`,
       typeArguments: [],
       functionArguments: [sellerAddr],
     },

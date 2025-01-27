@@ -9,11 +9,11 @@
 //     face: number;
 // };
 
-// export type Listing = {
-//     listing_object_address: string;
-//     price: number;
-//     seller_address: string;
-// };
+export type Listing = {
+  listing_object_address: string;
+  price: number;
+  seller_address: string;
+};
 
 // export type AptogotchiWithTraits = Aptogotchi & AptogotchiTraits;
 // export type ListedAptogotchiWithTraits = Aptogotchi &

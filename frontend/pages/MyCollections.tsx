@@ -43,7 +43,7 @@ export function MyCollections() {
         ) : (
           <div className="flex flex-col gap-8">
             {chunkedCollections.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex w-[60rem] gap-6">
+              <div key={rowIndex} className="flex w-[35rem] gap-6">
                 {row.map((collection: any) => (
                   <Link
                     key={collection?.collection_id}

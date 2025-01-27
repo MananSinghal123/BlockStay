@@ -122,8 +122,8 @@ export function CreateCollection() {
     <div className="min-h-screen bg-[#070B1E] text-white">
       <div className="container mx-auto px-2 py-2">
         <LaunchpadHeader title="List Hotel" />
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -132,10 +132,7 @@ export function CreateCollection() {
           {/* Warning Alerts */}
           {(!account || account.address !== CREATOR_ADDRESS) && (
             <div className="mb-4">
-              <WarningAlert 
-                title={account ? "Wrong account connected" : "No account connected"}
-            
-              >
+              <WarningAlert title={account ? "Wrong account connected" : "No account connected"}>
                 Connect the correct wallet to proceed
               </WarningAlert>
             </div>
@@ -143,10 +140,7 @@ export function CreateCollection() {
 
           {wallet && isAptosConnectWallet(wallet) && (
             <div className="mb-4">
-              <WarningAlert 
-                title="Wallet not supported" 
-                
-              >
+              <WarningAlert title="Wallet not supported">
                 Google account is not supported for NFT collection creation
               </WarningAlert>
             </div>
@@ -170,8 +164,8 @@ export function CreateCollection() {
                   onChange={(event) => setFiles(event.currentTarget.files)}
                 />
                 {!files?.length ? (
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => inputRef.current?.click()}
                     className="w-full hover:text-white hover:bg-gray-700 transition-colors"
                   >
@@ -180,8 +174,8 @@ export function CreateCollection() {
                 ) : (
                   <div className="flex items-center text-white space-x-4">
                     <span>{files.length} files selected</span>
-                    <Button 
-                      variant="destructive" 
+                    <Button
+                      variant="destructive"
                       size="sm"
                       onClick={() => {
                         setFiles(null);
@@ -197,7 +191,7 @@ export function CreateCollection() {
           </Card>
 
           {/* Remaining form fields - preserved exactly */}
-          <div className="space-y-4 text-white">
+          <div className="space-y-4 text-black">
             <div className="flex space-x-4">
               <DateTimeInput
                 id="mint-start"
@@ -223,41 +217,35 @@ export function CreateCollection() {
               />
             </div>
 
-            <LabeledInput
+            {/* <LabeledInput
               id="mint-limit"
               label="Rooms Available"
               disabled={isUploading || !account}
               onChange={(e) => setPublicMintLimitPerAccount(parseInt(e.target.value))}
               tooltip="the limit of rooms available"
               
-            />
+            /> */}
 
             <LabeledInput
               id="mint-fee"
-              label="Mint Fee per Room (APT)"
+              label="Booking Charge per Room (APT)"
               disabled={isUploading || !account}
               onChange={(e) => setPublicMintFeePerNFT(Number(e.target.value))}
               tooltip="price of each room"
             />
 
-            <LabeledInput
+            {/* <LabeledInput
               id="for-myself"
               label="Mint for Myself"
               disabled={isUploading || !account}
               onChange={(e) => setPreMintAmount(parseInt(e.target.value))}
               tooltip="if you want to mint for yourself or someone else"
-            />
+            /> */}
 
             <ConfirmButton
               title="List Hotel"
               onSubmit={onCreateCollection}
-              disabled={
-                !account ||
-                !files?.length ||
-                !publicMintStartDate ||
-                !publicMintLimitPerAccount ||
-                isUploading
-              }
+              disabled={!account || !files?.length || !publicMintStartDate || !publicMintLimitPerAccount || isUploading}
               confirmMessage={
                 <>
                   <p>Upload process requires 2 message signatures</p>

@@ -1,0 +1,16 @@
+{
+  "description": "Deluxe Room at Oberoi Hotels",
+  "image": "to_fill_after_upload",
+  "name": "Oberoi Hotels Deluxe Room",
+  "external_url": "https://your_project_url.io/3",
+  "attributes": [
+    {
+      "Bathroom": "Private",
+      "Bed": "King",
+      "Floor": "1st",
+      "Room": "Deluxe"
+      // "trait_type": "golden_level",
+      // "value": "3"
+    }
+  ]
+}

@@ -24,8 +24,8 @@ export const LaunchpadHeader: FC<LaunchpadHeaderProps> = ({ title }) => {
   }, []);
 
   const navItems = [
-    {title: "Home", path: "/"},
-    { title: "Book Page", path: "/book" },
+    { title: "Home", path: "/" },
+    // { title: "Book Page", path: "/book" },
     { title: "All Hotels", path: "/my-collections" },
     { title: "List Hotel", path: "/create-collection" },
     { title: "Listings", path: "/portfolio" },

@@ -1,14 +1,16 @@
 {
-  "description": "Normal Room at Virgin Hotels",
+  "description": "Normal Room at Taj Hotels",
   "image": "to_fill_after_upload",
-  "name": "Virgin Hotels Normal Room",
+  "name": "Taj Hotels Normal Room",
   "external_url": "https://your_project_url.io/3",
   "attributes": [
     {
       "Bathroom": "Private",
       "Bed": "King",
-      "Floor": "2nd",
+      "Floor": "1st",
       "Room": "Normal"
+      // "trait_type": "golden_level",
+      // "value": "3"
     }
   ]
 }

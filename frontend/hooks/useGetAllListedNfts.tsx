@@ -12,22 +12,24 @@ import { NFT } from "@/utils/types";
 
 export const useGetAllListedNfts = () => {
   const sellers = useGetAllSellers();
+  // console.log("sellers", sellers);
   const [nfts, setNfts] = useState<NFT[]>();
+  console.log("nfts", nfts);
   useEffect(() => {
     if (!sellers) return;
     (async () => {
       const nfts = [];
       for (const seller of sellers) {
         const listingObjectAddresses = await getAllListingObjectAddresses(seller);
-        console.log("listingObjectAddresses", listingObjectAddresses);
+        // console.log("listingObjectAddresses", listingObjectAddresses);
         for (const listingObjectAddress of listingObjectAddresses) {
           const [nftAddress, sellerAddress] = await getListingObjectAndSeller(listingObjectAddress);
-          //   const price = await getListingObjectPrice(listingObjectAddress);
-          console.log("nft Address", nftAddress);
+          const price = await getListingObjectPrice(listingObjectAddress);
+          // console.log("nft Address", nftAddress);
           const nft = await getNft(nftAddress);
-          console.log("nft", nft);
+          // console.log("Getnft", nft);
           //   console.log("Listed NFTs", nft);
-          //   nfts.push({});
+          nfts.push({ ...nft, price, sellerAddress, listing_object_address: listingObjectAddress });
         }
         // getUserOwnedNfts(ownerAddr).then(async (res) => {
 
