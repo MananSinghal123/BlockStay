@@ -31,15 +31,29 @@ List booking NFTs for sale
 Purchase booking NFTs from others
 Trade within the valid booking period
 
-Installation
+Installation:
 
-Clone the repository
+Clone the repository:
+
 git clone https://github.com/MananSinghal123/BlockStay.git .
 
-Install dependencies
-cd [Folder]
+Install dependencies:
+
+npm i
 
 
-cd frontend
 npm run dev
+
+.env file Format
+
+PROJECT_NAME=my-aptos-dapp
+VITE_APP_NETWORK=testnet
+VITE_APTOS_API_KEY=""
+VITE_MODULE_PUBLISHER_ACCOUNT_ADDRESS=""
+#This is the module publisher account's private key. Be cautious about who you share it with, and ensure it is not exposed when deploying your dApp.
+VITE_MODULE_PUBLISHER_ACCOUNT_PRIVATE_KEY=""
+VITE_COLLECTION_CREATOR_ADDRESS=""
+#To fill after you create a collection, will be used for the minting page
+VITE_COLLECTION_ADDRESS=""
+VITE_MODULE_ADDRESS="0x214b532d9d6cbe60a57ab9b4bc0d7217ca6c90028ac808030171e35670c785f"
 
