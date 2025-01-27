@@ -34,7 +34,7 @@ export const Buy = ({ listing }: Props) => {
           transactionHash: response.hash,
         })
         .then(() => {
-          alert("Listed");
+          alert("Bought");
         });
 
       console.log("Bought");
