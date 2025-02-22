@@ -1,34 +1,34 @@
-import { useGetCollectionData } from "@/hooks/useGetCollectionData"
-import { Link } from "react-router-dom"
-import { WalletSelector } from "./WalletSelector"
-import { IS_DEV } from "@/constants"
-import { buttonVariants } from "@/components/ui/button"
-import { config } from "@/config"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useGetCollectionData } from "@/hooks/useGetCollectionData";
+import { Link } from "react-router-dom";
+import { WalletSelector } from "./WalletSelector";
+import { IS_DEV } from "@/constants";
+import { buttonVariants } from "@/components/ui/button";
+import { config } from "@/config";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export function Header() {
-  const { data } = useGetCollectionData()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const { scrollY } = useScroll()
-  const headerOpacity = useTransform(scrollY, [0, 50], [0.8, 1])
-  const headerBlur = useTransform(scrollY, [0, 50], [0, 8])
+  const { data } = useGetCollectionData();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const headerOpacity = useTransform(scrollY, [0, 50], [0.8, 1]);
+  const headerBlur = useTransform(scrollY, [0, 50], [0, 8]);
 
   useEffect(() => {
     const updateScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener("scroll", updateScroll)
-    return () => window.removeEventListener("scroll", updateScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", updateScroll);
+    return () => window.removeEventListener("scroll", updateScroll);
+  }, []);
 
   const navItems = [
-    {title: "Home", path: "/"},
+    { title: "Home", path: "/" },
     { title: "Book Page", path: "/book" },
     { title: "All Hotels", path: "/my-collections" },
     { title: "List Hotel", path: "/create-collection" },
     { title: "Listings", path: "/portfolio" },
-  ]
+  ];
 
   return (
     <motion.div
@@ -104,5 +104,5 @@ export function Header() {
         </motion.div>
       </div>
     </motion.div>
-  )
+  );
 }

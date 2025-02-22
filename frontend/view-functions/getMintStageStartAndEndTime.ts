@@ -3,18 +3,18 @@ import { aptosClient } from "@/utils/aptosClient";
 import { MODULE_ADDRESS } from "@/constants";
 
 type GetMintStageStartAndEndTimeArguments = {
-  collectionAddress : string;
+  collectionAddress: string;
   mint_stage: string;
 };
 
 export const getMintStageStartAndEndTime = async ({
-  collectionAddress ,
+  collectionAddress,
   mint_stage,
 }: GetMintStageStartAndEndTimeArguments) => {
   const startAndEndRes = await aptosClient().view<[string, string]>({
     payload: {
       function: `${AccountAddress.from(MODULE_ADDRESS)}::launchpad::get_mint_stage_start_and_end_time`,
-      functionArguments: [collectionAddress , mint_stage],
+      functionArguments: [collectionAddress, mint_stage],
     },
   });
 

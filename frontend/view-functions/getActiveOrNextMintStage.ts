@@ -2,7 +2,6 @@ import { AccountAddress } from "@aptos-labs/ts-sdk";
 import { aptosClient } from "@/utils/aptosClient";
 import { MODULE_ADDRESS } from "@/constants";
 
-
 type GetRegistryArguments = {
   collectionAddress: string;
 };

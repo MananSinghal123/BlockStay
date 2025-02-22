@@ -24,20 +24,19 @@ const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-     <CollectionProvider>
-    <AppContextProvider>
-      <WalletProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider delayDuration={100}>
+    <CollectionProvider>
+      <AppContextProvider>
+        <WalletProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider delayDuration={100}>
+              <App />
 
-            <App />
-
-            <WrongNetworkAlert />
-            <Toaster />
-          </TooltipProvider>
-        </QueryClientProvider>
-      </WalletProvider>
-    </AppContextProvider>
+              <WrongNetworkAlert />
+              <Toaster />
+            </TooltipProvider>
+          </QueryClientProvider>
+        </WalletProvider>
+      </AppContextProvider>
     </CollectionProvider>
   </React.StrictMode>,
 );
